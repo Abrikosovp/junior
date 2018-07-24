@@ -1,6 +1,6 @@
 package ru.shifu.condition;
 /**
- * FitTest.
+ * Point.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru).
  * @version 1.
