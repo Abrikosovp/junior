@@ -29,9 +29,9 @@ public class TurnTest {
      */
     @Test
     public void whenTurnArrayWithOddAmountOfElementsThenTurnedArray() {
-        Turn turn = new Turn();
+        Turn turns = new Turn();
         int[] input = {1, 2, 3, 4, 5};
-        int result[] = turn.turn(input);
+        int[] result = turns.turn(input);
         int[] expected = {5, 4, 3, 2, 1};
         assertThat(result, is(expected));
     }
