@@ -77,7 +77,7 @@ public class Logic3T {
         boolean result = false;
         for (int i = 0; i < this.table.length; i++) {
             for (int j = 0; j < this.table.length; j++) {
-                if (table[i][j]!= null) {
+                if (table[i][j] != null) {
                     result = true;
                     break;
                 }
