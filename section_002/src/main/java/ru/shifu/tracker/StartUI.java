@@ -39,13 +39,13 @@ public class StartUI {
      */
     private static final String DELETE = "3";
     /**
-     * Константа меню для поиска заявок по имени.
-     */
-    private static final String FINDBYNAME = "4";
-    /**
      * Константа меню для поиска заявки по ID.
      */
-    private static final String FINDBYID = "5";
+    private static final String FINDBYID = "4";
+    /**
+     * Константа меню для поиска заявок по имени.
+     */
+    private static final String FINDBYNAME = "5";
     /**
      * Константа для выхода из цикла.
      */
@@ -99,7 +99,7 @@ public class StartUI {
         String name = this.input.ask(" Введите имя заявки ");
         String desc = this.input.ask(" Введите описание заявки ");
         Item item = new Item(name, desc);
-        tracker.add(item);
+        this.tracker.add(item);
         System.out.println(" -------- Новая заявка с getId: " + item.getId() + " созданна. -------- ");
     }
 
