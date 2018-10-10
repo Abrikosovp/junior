@@ -1,5 +1,7 @@
 package ru.shifu.pseudo;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -15,36 +17,40 @@ import static org.junit.Assert.assertThat;
  * @since 10.10.2018.
  **/
 public class PaintTest {
+
+   private final ByteArrayOutputStream out = new ByteArrayOutputStream();
+   private final PrintStream stdout = System.out;
+
+   @Before
+   public void loadOutput() {
+       System.setOut(new PrintStream(this.out));
+   }
+   @After
+   public void backOutput() {
+       System.setOut(this.stdout);
+   }
     /**
      * Тест проверят квадрат.
      */
     @Test
     public void whenDrawSquare() {
-        PrintStream stdout = System.out;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
-        Paint paint = new Paint();
-        paint.setShape(new Square());
-        paint.executeStrategy();
-        assertThat(new String(out.toByteArray()), is(new StringBuilder()
+        String string = new StringBuilder()
                 .append("++++\n")
                 .append("+  +\n")
                 .append("+  +\n")
                 .append("++++\n")
                 .append(System.lineSeparator())
-                .toString()
-                )
-        );
-        System.setOut(stdout);
+                .toString();
+        Paint paint = new Paint();
+        paint.setShape(new Square());
+        paint.executeStrategy();
+        assertThat(new String(out.toByteArray()), is(string));
     }
     /**
      * Тест проверят треугольник.
      */
     @Test
     public void whenDrawTriangle() {
-        PrintStream stream = System.out;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
         Paint triangle = new Paint();
         triangle.setShape(new Triangle());
         triangle.executeStrategy();
@@ -55,6 +61,5 @@ public class PaintTest {
                 .append("+++++++\n")
                 .append(System.lineSeparator())
                 .toString()));
-        System.setOut(stream);
     }
 }
