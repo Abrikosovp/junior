@@ -1,8 +1,12 @@
 package ru.shifu.pseudo;
+
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+
 /**
  * PaintTest .
  *
@@ -16,23 +20,41 @@ public class PaintTest {
      */
     @Test
     public void whenDrawSquare() {
-        assertThat(new Square().draw(), is(new StringBuilder()
+        PrintStream stdout = System.out;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+        Paint paint = new Paint();
+        paint.setShape(new Square());
+        paint.executeStrategy();
+        assertThat(new String(out.toByteArray()), is(new StringBuilder()
                 .append("++++\n")
                 .append("+  +\n")
                 .append("+  +\n")
                 .append("++++\n")
-                .toString()));
+                .append(System.lineSeparator())
+                .toString()
+                )
+        );
+        System.setOut(stdout);
     }
     /**
      * Тест проверят треугольник.
      */
     @Test
     public void whenDrawTriangle() {
-        assertThat(new Triangle().draw(), is(new StringBuilder()
+        PrintStream stream = System.out;
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out));
+        Paint triangle = new Paint();
+        triangle.setShape(new Triangle());
+        triangle.executeStrategy();
+        assertThat(new String(out.toByteArray()), is(new StringBuilder()
                 .append("   +   \n")
                 .append("  +++  \n")
                 .append(" +++++ \n")
                 .append("+++++++\n")
+                .append(System.lineSeparator())
                 .toString()));
+        System.setOut(stream);
     }
 }
