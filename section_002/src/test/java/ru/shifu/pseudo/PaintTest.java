@@ -8,7 +8,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-
 /**
  * PaintTest .
  *
@@ -17,14 +16,24 @@ import static org.junit.Assert.assertThat;
  * @since 10.10.2018.
  **/
 public class PaintTest {
-
+    /**
+     * Массив байт, который мы можем проверить в нашем тесте.
+     */
    private final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    /**
+     * Получаем ссылку на стандартный вывод в консоль.
+     */
    private final PrintStream stdout = System.out;
-
+    /**
+     * Класс для вывода в консоль и заменить ее выводом в память.
+     */
    @Before
    public void loadOutput() {
        System.setOut(new PrintStream(this.out));
    }
+    /**
+     * Возвращаем обратно стандартный вывод в консоль.
+     */
    @After
    public void backOutput() {
        System.setOut(this.stdout);

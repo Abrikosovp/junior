@@ -110,7 +110,6 @@ public class StartUI {
         System.out.println(" -------- Показать все заявки ---------- ");
         for (Item item:this.tracker.findAll()) {
             System.out.println("Имя: " + item.getName() + " Описание: " + item.getDescription() + " id: " + item.getId());
-            System.out.println();
         }
     }
 
