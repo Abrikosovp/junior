@@ -8,9 +8,9 @@ package ru.shifu.tracker;
  **/
 public interface Input {
     /**
-     *
      * @param question спросить пользователя.
      * @return ответ.
      */
     String ask(String question);
+
 }

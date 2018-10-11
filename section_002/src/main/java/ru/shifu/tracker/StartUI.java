@@ -16,7 +16,6 @@ public class StartUI {
      */
     private Tracker tracker;
 
-   private boolean exit = false;
 
     public StartUI(Input input, Tracker tracker) {
         this.input = input;
@@ -26,19 +25,29 @@ public class StartUI {
     /**
      * Константа для выхода из цикла.
      */
-    private static final String EXIT = "y";
+    private  boolean run = false;
+
 
     /**
      * Основой цикл программы.
      */
     public void init() {
         MenuTracker menu = new MenuTracker(this.input, this.tracker);
-        menu.fillActions();
-        do {
-            menu.show();
-            menu.select(Integer.valueOf(input.ask("\nВыберете пункт: ")));
+        menu.fillActions(this);
 
-        } while (!EXIT.equals(input.ask("Exit? (y)")));
+         while (!run) {
+             System.out.printf("%s%s%s%s", "Menu.", System.lineSeparator(),
+                            "Select a menu item :", System.lineSeparator());
+             menu.show();
+             menu.select(Integer.valueOf(input.ask("Select: ")));
+         }
+    }
+
+    /**
+     * Метод способствует выходу из программы
+     */
+    public void stop() {
+        this.run = true;
     }
 
     public static void main(String[] args) {
