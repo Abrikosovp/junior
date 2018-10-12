@@ -66,7 +66,7 @@ public class StartUITest {
     StringBuilder result = new StringBuilder();
       result.append(String.format(" ------------ All items ------------ %s", sepor))
             .append(String.format(" ------------ Name: %s%s", item.getName(), sepor))
-            .append(String.format(" ------------ Description: %s%s",item.getDescription(), sepor))
+            .append(String.format(" ------------ Description: %s%s", item.getDescription(), sepor))
             .append(String.format(" ------------ ID: %s%s", item.getId(), sepor))
             .toString();
 
@@ -139,7 +139,7 @@ public class StartUITest {
                 .toString();
 
         new StartUI(input, tracker).init();
-        assertThat(new String(out.toByteArray()), Is.is(this.toString(result)));
+        assertThat(new String(this.out.toByteArray()), Is.is(this.toString(result)));
     }
 
     /**
