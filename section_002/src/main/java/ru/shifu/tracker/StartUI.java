@@ -27,7 +27,6 @@ public class StartUI {
      */
     private  boolean run = false;
 
-
     /**
      * Основой цикл программы.
      */
@@ -39,7 +38,7 @@ public class StartUI {
              System.out.printf("%s%s%s%s", "Menu.", System.lineSeparator(),
                             "Select a menu item :", System.lineSeparator());
              menu.show();
-             menu.select(Integer.valueOf(input.ask("Select: ")));
+             menu.select(input.ask("Select: ", menu.getFullRange()));
          }
     }
 
@@ -51,6 +50,6 @@ public class StartUI {
     }
 
     public static void main(String[] args) {
-        new StartUI(new ConsoleInput(), new Tracker()).init();
+        new StartUI(new ValidateImput(), new Tracker()).init();
     }
 }

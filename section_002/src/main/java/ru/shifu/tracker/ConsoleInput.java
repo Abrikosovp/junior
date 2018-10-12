@@ -25,4 +25,26 @@ public class ConsoleInput implements Input {
         return scanner.nextLine();
     }
 
+    /**
+     * Метод позволяет задать вопрос и получить ответ с клавиатуры.
+     * @param question спросить пользователя.
+     * @param range граници которые пользователь должен ввеси.
+     * @return  ответ который пользователь введет с клавиатуры.
+     */
+    @Override
+    public int ask(String question, int[] range) {
+        boolean exist = false;
+        int key = Integer.valueOf(this.ask(question));
+        for (int value : range) {
+            if (value == key) {
+                exist = true;
+                break;
+            }
+        }
+        if (exist) {
+            return key;
+        } else {
+            throw new MenuOutExeption("Outside the boundaries of the range");
+        }
+    }
 }

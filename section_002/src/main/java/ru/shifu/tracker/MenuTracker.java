@@ -70,6 +70,24 @@ public class MenuTracker {
         this.actions[5] = new FindByNameItem();
         this.actions[6] = new ExitProgram(ui);
     }
+    /**
+     * Метод вычисляет длинну массива.
+     * @return length.
+     */
+    public int getActionsLength() {
+        return actions.length;
+    }
+    /**
+     * Метод рачитывает граници, для ввода пользователем.
+     * @return range.
+     */
+    public int[] getFullRange() {
+        int[] range = new int[this.getActionsLength()];
+        for (int i = 0; i != this.getActionsLength(); i++) {
+            range[i] = i;
+        }
+        return range;
+    }
 
     /**
      * Метод выполняет наши действия, которые выбрал пользователь.
@@ -78,7 +96,6 @@ public class MenuTracker {
     public void select(int key) {
         this.actions[key].execute(this.input, this.tracker);
     }
-
 
     /**
      * Метод печатает меню.
