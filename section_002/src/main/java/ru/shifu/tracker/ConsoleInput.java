@@ -41,10 +41,9 @@ public class ConsoleInput implements Input {
                 break;
             }
         }
-        if (exist) {
-            return key;
-        } else {
+        if (!exist) {
             throw new MenuOutExeption("Outside the boundaries of the range");
         }
+        return key;
     }
 }
