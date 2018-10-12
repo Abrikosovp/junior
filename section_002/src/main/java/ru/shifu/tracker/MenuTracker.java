@@ -3,32 +3,23 @@ package ru.shifu.tracker;
  * Внутренний класс ExitProgram = 6
  *
  * Выход из программы.
- * @key Ключ запуска для добавления.
  * @execute Метод действия.
- * @info Выводит описывающую информацию.
  *
  */
- class ExitProgram implements UserAction {
+ class ExitProgram extends BaseAction {
 
     private StartUI exitProgram;
 
-    public ExitProgram(StartUI exitProgram) {
+    public ExitProgram(String name, int key, StartUI exitProgram) {
+        super(name, key);
         this.exitProgram = exitProgram;
     }
-    @Override
-    public int key() {
-        return 6;
-    }
+
     @Override
     public void execute(Input input, Tracker tracker) {
         this.exitProgram.stop();
     }
-    @Override
-    public String info() {
-        return String.format("%s. %s", this.key(), "Exit for program");
-    }
 }
-
 /**
  * StartUI точка входа в программу, .
  *
@@ -46,7 +37,6 @@ public class MenuTracker {
      */
     private Tracker tracker;
 
-
     public MenuTracker(Input input, Tracker tracker) {
         this.input = input;
         this.tracker = tracker;
@@ -58,27 +48,41 @@ public class MenuTracker {
     private UserAction[] actions = new UserAction[10];
 
     /**
+     * Поле ответственное за нуммерацию ячейки массива actions.
+     */
+    private int position = 0;
+    /**
+     * Поле ответсвенне за пронумерование меню (key()) для вывода на экран.
+     */
+    private int menuNumber = 0;
+
+    /**
      * Метод инициализурет ключи для команд в массиве actions.
      * Удобно его использовать для цикла.
+     * @param ui
      */
     public void fillActions(StartUI ui) {
-        this.actions[0] = new AddItem();
-        this.actions[1] = new ShowAllItem();
-        this.actions[2] = new EditItem();
-        this.actions[3] = new DeleteItem();
-        this.actions[4] = new FindByIdItem();
-        this.actions[5] = new FindByNameItem();
-        this.actions[6] = new ExitProgram(ui);
+        this.actions[position++] = new AddItem("Add new Item", menuNumber++);
+        this.actions[position++] = new ShowAllItem("Show all items", menuNumber++);
+        this.actions[position++] = new EditItem("Edit item", menuNumber++);
+        this.actions[position++] = new DeleteItem("Delete item", menuNumber++);
+        this.actions[position++] = new FindByIdItem("Find item by Id", menuNumber++);
+        this.actions[position++] = new FindByNameItem("Find items by name", menuNumber++);
+        this.actions[position++] = new ExitProgram("Exit for program", menuNumber, ui);
     }
+
     /**
      * Метод вычисляет длинну массива.
+     *
      * @return length.
      */
     public int getActionsLength() {
         return actions.length;
     }
+
     /**
      * Метод рачитывает граници, для ввода пользователем.
+     *
      * @return range.
      */
     public int[] getFullRange() {
@@ -91,6 +95,7 @@ public class MenuTracker {
 
     /**
      * Метод выполняет наши действия, которые выбрал пользователь.
+     *
      * @param key уникальный ключ.
      */
     public void select(int key) {
@@ -101,25 +106,23 @@ public class MenuTracker {
      * Метод печатает меню.
      */
     public void show() {
-        for (UserAction action:this.actions) {
+        for (UserAction action : this.actions) {
             if (action != null) {
                 System.out.println(action.info());
             }
         }
     }
+
     /**
      * Внутренний класс ADD = 0
      *
      * Добавляет заявку в хранилище!
-     * @key Ключ запуска для добавления
      * @execute Метод действия
-     * @info Выводит описывающую информацию.
-     *
      */
-    private static class AddItem implements UserAction {
-        @Override
-        public int key() {
-            return 0;
+    private static class AddItem extends BaseAction {
+
+        public AddItem(String name, int key) {
+            super(name, key);
         }
 
         @Override
@@ -131,57 +134,42 @@ public class MenuTracker {
             tracker.add(item);
             System.out.println(" ------------ New Item with Id: " + item.getId());
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Add new Item");
-        }
     }
+
     /**
      * Внутренний класс ShowItems = 1
      *
      * Выводит на экран все заявки.
-     * @key Ключ запуска для добавления.
      * @execute Метод действия.
-     * @info Выводит описывающую информацию  действия.
-     *
      */
-    private class ShowAllItem implements UserAction {
-        @Override
-        public int key() {
-            return 1;
+    private class ShowAllItem extends BaseAction {
+
+        public ShowAllItem(String name, int key) {
+            super(name, key);
         }
 
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println(" ------------ All items ------------ ");
-            for (Item item:tracker.findAll()) {
+            for (Item item : tracker.findAll()) {
                 System.out.println(" ------------ Name: " + item.getName());
                 System.out.println(" ------------ Description: " + item.getDescription());
                 System.out.println(" ------------ ID: " + item.getId());
 
             }
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Show all items");
-        }
     }
+
     /**
      * Внутренний класс EditItem = 2
      *
      * Обновляет заявку в хранилище.
-     * @key Ключ запуска для добавления.
      * @execute Метод действия.
-     * @info Выводит описывающую информацию.
-     *
      */
-    private class EditItem implements UserAction {
+    private class EditItem extends BaseAction {
 
-        @Override
-        public int key() {
-            return 2;
+        EditItem(String name, int key) {
+            super(name, key);
         }
 
         @Override
@@ -201,26 +189,18 @@ public class MenuTracker {
                 System.out.println(" ----- No item with this ID ----- ");
             }
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Edit item");
-        }
     }
+
     /**
      * Внутренний класс Delete = 3
-     *
+     * <
      * Удаляет заявку из хранилища, а именно присваивает ей null.
-     * @key Ключ запуска для добавления.
      * @execute Метод действия.
-     * @info Выводит описывающую информацию.
-     *
      */
-    private class DeleteItem implements UserAction {
+    private class DeleteItem extends BaseAction {
 
-        @Override
-        public int key() {
-            return 3;
+        public DeleteItem(String name, int key) {
+            super(name, key);
         }
 
         @Override
@@ -235,26 +215,19 @@ public class MenuTracker {
                 System.out.println(" ------ No item with this ID ------ ");
             }
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Delete item");
-        }
     }
+
     /**
      * Внутренний класс FindItemById = 4
      *
      * Ищет заявку по ID.
-     * @key Ключ запуска для добавления.
      * @execute Метод действия.
-     * @info Выводит описывающую информацию.
-     *
      */
-    private class FindByIdItem implements UserAction {
+    private class FindByIdItem extends BaseAction {
 
-        @Override
-        public int key() {
-            return 4;
+
+        public FindByIdItem(String name, int key) {
+            super(name, key);
         }
 
         @Override
@@ -268,25 +241,18 @@ public class MenuTracker {
                 System.out.println(" ----- No item with this ID ----- ");
             }
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Find item by Id");
-        }
     }
+
     /**
      * Внутренний класс FindItemByName = 5
      *
      * Ищет заявку по строке имени.
-     * @key Ключ запуска для добавления.
      * @execute Метод действия.
-     * @info Выводит описывающую информацию.
-     *
      */
-    private class FindByNameItem implements UserAction {
-        @Override
-        public int key() {
-            return 5;
+    private class FindByNameItem extends BaseAction {
+
+        public FindByNameItem(String name, int key) {
+            super(name, key);
         }
 
         @Override
@@ -304,12 +270,5 @@ public class MenuTracker {
                 }
             }
         }
-
-        @Override
-        public String info() {
-            return String.format("%s. %s", this.key(), "Find items by name");
-        }
     }
-
-
 }
