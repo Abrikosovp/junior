@@ -83,7 +83,7 @@ public class Board {
         //в цикле проверяем: что ячейка где создали новую фигуру не пустая ,
         // и проверяем что координаты что в ячейки совподают с координатами начального хода
         for (int i = 0; i < pos; i++) {
-            if (this.figures[i] != null || this.figures[i].getPosition().x == source.x || this.figures[i].getPosition().y == source.y) {
+            if (this.figures[i] != null && this.figures[i].getPosition().x == source.x && this.figures[i].getPosition().y == source.y) {
                 index = i;
             }
         }

@@ -16,6 +16,7 @@
     <modules>
         <module>section_001</module>
         <module>section_002</module>
+        <module>section_003</module>
     </modules>
 <dependencies>
     <dependency>
