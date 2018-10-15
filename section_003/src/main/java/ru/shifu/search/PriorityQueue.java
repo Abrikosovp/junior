@@ -13,7 +13,7 @@ public class PriorityQueue {
     /**
      * Хранилище.
      */
-    private static LinkedList<Task> tasks = new LinkedList<>();
+    private  LinkedList<Task> tasks = new LinkedList<>();
     /**
      * Метод: очередь с приоритетом.
      * Работает по принципу: есть счетчик который считает и самый большой элем ставит в конец
