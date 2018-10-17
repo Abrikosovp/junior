@@ -50,8 +50,8 @@ public class ConvertList2ArrayTest {
         arr.add(9);
         arr.add(10);
         int[][] result = list.toArray(arr, 4);
-        int[][] execut = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 0, 0}};
-        assertThat(execut, is(result));
+        int[][] expect = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 0, 0}};
+        assertThat(expect, is(result));
     }
     /**
      * Тест проверяет что мы из ArrayList - получим двумерный массив, а остаток заполняет 0
@@ -65,6 +65,17 @@ public class ConvertList2ArrayTest {
                 {1, 2},
                 {7, 0}
         };
+        assertThat(expect, is(result));
+    }
+    /**
+     * Тест проверяет что мы из ListArrays - получим ListInteger
+     */
+    @Test
+    public void whenListArrayThenListInteger() {
+        ConvertList2Array convert = new ConvertList2Array();
+        List<int[]> list = Arrays.asList(new int[]{1, 2}, new int[]{3, 4, 5, 6});
+        List<Integer> result = convert.convertList(list);
+        List<Integer> expect = Arrays.asList(1, 2, 3, 4, 5, 6);
         assertThat(expect, is(result));
     }
 }
