@@ -1,5 +1,6 @@
 package ru.shifu.tracker;
 
+import java.util.ArrayList;
 import java.util.Random;
 /**
  * Tracker .
@@ -12,11 +13,10 @@ public class Tracker {
     /**
      * Массив для хранение заявок.
      */
-    private Item[] items = new Item[100];
+    private ArrayList<Item> items = new ArrayList<>();
     /**
      * Указатель ячейки для новой заявки.
      */
-    private int position = 0;
     private static final Random RN = new Random();
     /**
      * Метод реализаущий добавление заявки в хранилище
@@ -24,7 +24,7 @@ public class Tracker {
      */
     public Item add(Item item) {
         item.setId(this.generateId());
-        this.items[position++] = item;
+        this.items.add(item);
         return item;
     }
     /**
@@ -42,48 +42,48 @@ public class Tracker {
      * @param item заявка которую нужно изменить.
      */
     public void replace(String id, Item item) {
-        for (int i = 0; i != this.position; i++) {
-            if (item.getId().equals(id)) {
-                this.items[i] = item;
-                break;
+        Item result = null;
+        for (Item value : this.items){
+            if (value.getId().equals(id)) {
+               result = value;
             }
         }
+        result.setName(item.getName());
+        result.setDescription(item.getDescription());
+        result.setCreate(item.getCreate());
     }
     /**
      * Метод удаление заявок. даление ячейки в массиве this.items.
      * @param id для удаления необходимо найти ячейку в массиве по id.
      */
     public void delete(String id) {
-        for (int index = 0; index != this.position; index++) {
-            if (this.items[index].getId().equals(id)) {
-                System.arraycopy(this.items, index + 1, this.items, index, this.items.length - 1 - index);
+        Item result = null;
+        for (Item value : this.items) {
+            if (value.getId().equals(id)) {
+                result = value;
                 break;
             }
         }
+        this.items.remove(result);
     }
     /**
      * Метод получение списка всех заявок.
      * @return копию массива this.items без null элементов.
      */
-    public Item[] findAll() {
-        Item[] result = new Item[this.position];
-        for (int i = 0; i != this.position; i++) {
-            if (this.items[i] != null) {
-            result[i] = this.items[i];
-            }
-        }
-        return result;
+    public ArrayList<Item> findAll() {
+      return this.items;
     }
     /**
      * Метод получение списка по имени.
      * @param key ключ по которому будем искать.
      * @return массив со списком собранный по имени.
      */
-    public Item[] findByName(String key) {
-        Item[] result = new Item[this.position];
-        for (int i = 0; i != this.position; i++) {
-            if (this.items[i].getName().equals(key)) {
-                result[i] = this.items[i];
+    public ArrayList<Item> findByName(String key) {
+        ArrayList<Item> result = new ArrayList<>();
+        for (Item value : this.items) {
+            if (value.getName().equals(key)) {
+                result.add(value);
+                break;
             }
         }
         return result;

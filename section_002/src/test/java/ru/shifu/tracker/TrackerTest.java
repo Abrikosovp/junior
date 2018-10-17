@@ -18,7 +18,7 @@ public class TrackerTest {
     public void whenAddNewItemThenTrackerHasSameItem() {
         Tracker tracker = new Tracker();
         Item one = tracker.add(new Item("test", "testDesc", 123L));
-        assertThat(tracker.findAll()[0], is(one));
+        assertThat(tracker.findAll().get(0), is(one));
     }
     /**
      *  Тест - редактирование заявок.
@@ -41,8 +41,7 @@ public class TrackerTest {
         Item one = tracker.add(new Item("test", "testDesc", 123L));
         Item two = tracker.add(new Item("test2", "testDesc", 123L));
         tracker.delete(one.getId());
-        Item[] value = new Item[] {two, null};
-        assertThat(tracker.findAll(), is(value));
+        assertThat(tracker.findAll().get(0).getName(), is("test2"));
     }
     /**
      * Тест - метод получение списка всех заявок.
@@ -52,8 +51,9 @@ public class TrackerTest {
         Tracker tracker = new Tracker();
         Item one = tracker.add(new Item("test", "testDesc", 123L));
         Item two = tracker.add(new Item("test2", "testDesc", 123L));
-        Item[] value = new Item[] {one, two};
-        assertThat(tracker.findAll(), is(value));
+        Item[] rst = tracker.findAll().toArray(new Item[0]);
+        Item[] expected = {one, two};
+        assertThat(rst, is(expected));
     }
     /**
      * Тест - метод получение списка по имени.
@@ -63,7 +63,7 @@ public class TrackerTest {
         Tracker tracker = new Tracker();
         Item one = tracker.add(new Item("test", "testDesc", 123L));
         Item[] value = new Item[] {one};
-        assertThat(tracker.findByName("test"), is(value));
+        assertThat(tracker.findAll().toArray(new Item[0]), is(value));
     }
     /**
      * Тест - метод получение заявки по id.

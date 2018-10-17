@@ -1,4 +1,5 @@
 package ru.shifu.tracker;
+
 /**
  * ValidateInput ввода/вывода данных от пользователя .
  *

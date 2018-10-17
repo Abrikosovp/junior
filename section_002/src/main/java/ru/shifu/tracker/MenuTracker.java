@@ -1,4 +1,7 @@
 package ru.shifu.tracker;
+
+import java.util.ArrayList;
+
 /**
  * Внутренний класс ExitProgram = 6
  *
@@ -45,7 +48,7 @@ public class MenuTracker {
     /**
      * actions - те действия которые описанны в нашей системе.
      */
-    private UserAction[] actions = new UserAction[10];
+    private ArrayList<UserAction> actions = new ArrayList<>();
 
     /**
      * Поле ответственное за нуммерацию ячейки массива actions.
@@ -62,13 +65,13 @@ public class MenuTracker {
      * @param ui
      */
     public void fillActions(StartUI ui) {
-        this.actions[position++] = new AddItem("Add new Item", menuNumber++);
-        this.actions[position++] = new ShowAllItem("Show all items", menuNumber++);
-        this.actions[position++] = new EditItem("Edit item", menuNumber++);
-        this.actions[position++] = new DeleteItem("Delete item", menuNumber++);
-        this.actions[position++] = new FindByIdItem("Find item by Id", menuNumber++);
-        this.actions[position++] = new FindByNameItem("Find items by name", menuNumber++);
-        this.actions[position++] = new ExitProgram("Exit for program", menuNumber, ui);
+        this.actions.add(new AddItem("Add new Item", menuNumber++));
+        this.actions.add(new ShowAllItem("Show all items", menuNumber++));
+        this.actions.add(new EditItem("Edit item", menuNumber++));
+        this.actions.add(new DeleteItem("Delete item", menuNumber++));
+        this.actions.add(new FindByIdItem("Find item by Id", menuNumber++));
+        this.actions.add(new FindByNameItem("Find items by name", menuNumber++));
+        this.actions.add(new ExitProgram("Exit for program", menuNumber, ui));
     }
 
     /**
@@ -77,7 +80,7 @@ public class MenuTracker {
      * @return length.
      */
     public int getActionsLength() {
-        return actions.length;
+        return actions.size();
     }
 
     /**
@@ -86,9 +89,9 @@ public class MenuTracker {
      * @return range.
      */
     public int[] getFullRange() {
-        int[] range = new int[this.getActionsLength()];
-        for (int i = 0; i != this.getActionsLength(); i++) {
-            range[i] = i;
+        int[] range = new int[getActionsLength()];
+        for (int index = 0; index != this.getActionsLength(); index++) {
+            range[index] = index;
         }
         return range;
     }
@@ -99,7 +102,7 @@ public class MenuTracker {
      * @param key уникальный ключ.
      */
     public void select(int key) {
-        this.actions[key].execute(this.input, this.tracker);
+        this.actions.get(key).execute(this.input, this.tracker);
     }
 
     /**
@@ -259,7 +262,7 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             System.out.println(" -------- Find items with name -------- ");
             String name = input.ask(" Enter name: ");
-            Item[] items = tracker.findByName(name);
+            ArrayList<Item> items = tracker.findByName(name);
             for (Item item : items) {
                 if (item != null) {
                     System.out.println(" ------------ Name: " + item.getName());
