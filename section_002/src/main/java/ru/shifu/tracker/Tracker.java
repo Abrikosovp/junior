@@ -43,7 +43,7 @@ public class Tracker {
      */
     public void replace(String id, Item item) {
         Item result = null;
-        for (Item value : this.items){
+        for (Item value : this.items) {
             if (value.getId().equals(id)) {
                result = value;
             }
