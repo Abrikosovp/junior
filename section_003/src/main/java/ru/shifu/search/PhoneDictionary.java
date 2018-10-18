@@ -33,7 +33,7 @@ public class PhoneDictionary {
         for (Person person : this.persons) {
             if (person.getAddress().contains(key)
             || person.getName().contains(key)
-            ||person.getPhone().contains(key)
+            || person.getPhone().contains(key)
             || person.getSurname().contains(key)) {
                 result.add(person);
                 break;

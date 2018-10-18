@@ -20,7 +20,7 @@ public class ConvertList2Array {
      * @return двумерный массив.
      */
     public int[][] toArray(List<Integer> list, int rows) {
-        int cells = list.size() % rows > 0 ? list.size() / rows + 1 : list.size() / rows ;
+        int cells = list.size() % rows > 0 ? list.size() / rows + 1 : list.size() / rows;
         int[][] array = new int[rows][cells];
         ListIterator<Integer> iterator = list.listIterator();
         Spliterator<Integer> spliterato = list.spliterator();

@@ -20,7 +20,7 @@ public class PriorityQueueTest {
         queue.put(new Task("I", 3));
         queue.put(new Task("mama", 1));
         queue.put(new Task("papa", 2));
-        assertThat(queue.task().getDesc(),is("mama"));
+        assertThat(queue.task().getDesc(), is("mama"));
     }
 
     /**
@@ -34,7 +34,7 @@ public class PriorityQueueTest {
         queue.put(new Task("Irina", 3));
         queue.put(new Task("Antuan", 4));
         queue.put(new Task("I", 1));
-        assertThat(queue.task().getDesc(),is("I"));
+        assertThat(queue.task().getDesc(), is("I"));
     }
 }
 
