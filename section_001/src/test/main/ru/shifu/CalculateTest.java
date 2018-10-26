@@ -1,5 +1,6 @@
 package ru.shifu;
 import org.junit.Test;
+import ru.shifu.Calculate;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
