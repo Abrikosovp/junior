@@ -1,6 +1,8 @@
 package ru.shifu.tracker;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * Внутренний класс ExitProgram = 6
@@ -49,11 +51,6 @@ public class MenuTracker {
      * actions - те действия которые описанны в нашей системе.
      */
     private ArrayList<UserAction> actions = new ArrayList<>();
-
-    /**
-     * Поле ответственное за нуммерацию ячейки массива actions.
-     */
-    private int position = 0;
     /**
      * Поле ответсвенне за пронумерование меню (key()) для вывода на экран.
      */
@@ -108,12 +105,11 @@ public class MenuTracker {
     /**
      * Метод печатает меню.
      */
-    public void show() {
-        for (UserAction action : this.actions) {
-            if (action != null) {
-                System.out.println(action.info());
-            }
-        }
+    public void show(Consumer<String> consumer) {
+        this.actions.stream()
+                .filter(Objects::nonNull)
+                .map(UserAction::info)
+                .forEach(consumer);
     }
 
     /**

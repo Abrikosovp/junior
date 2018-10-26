@@ -2,6 +2,7 @@ package ru.shifu.tracker;
 
 import java.util.ArrayList;
 import java.util.Random;
+
 /**
  * Tracker .
  *

@@ -1,4 +1,7 @@
 package ru.shifu.tracker;
+
+import java.util.function.Consumer;
+
 /**
  * StartUI точка входа в программу, .
  *
@@ -30,14 +33,14 @@ public class StartUI {
     /**
      * Основой цикл программы.
      */
-    public void init() {
+    public void init(Consumer<String> consumer) {
         MenuTracker menu = new MenuTracker(this.input, this.tracker);
         menu.fillActions(this);
 
          while (!run) {
              System.out.printf("%s%s%s%s", "Menu.", System.lineSeparator(),
                             "Select a menu item :", System.lineSeparator());
-             menu.show();
+             menu.show(consumer);
              menu.select(input.ask("Select: ", menu.getFullRange()));
          }
     }
@@ -50,6 +53,6 @@ public class StartUI {
     }
 
     public static void main(String[] args) {
-        new StartUI(new ValidateInput(new ConsoleInput()), new Tracker()).init();
+        new StartUI(new ValidateInput(new ConsoleInput()), new Tracker()).init(System.out::println);
     }
 }
