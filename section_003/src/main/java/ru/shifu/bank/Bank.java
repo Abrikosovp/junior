@@ -79,12 +79,12 @@ public class Bank {
     /**
      * Метод для перечисления денег с одного счёта на другой счёт:
      * если счёт не найден или не хватает денег на счёте srcAccount (с которого переводят) должен вернуть false.
-     * @param srcPassport
-     * @param srcRequisite
-     * @param destPassport
-     * @param dstRequisite
-     * @param amount
-     * @return
+     * @param srcPassport srcUser passport.
+     * @param srcRequisite srcUser requisite from account.
+     * @param destPassport destUser passport.
+     * @param dstRequisite destUser requisite from account.
+     * @param amount сумма для трансфера.
+     * @return true если доступен перевод , иначе false
      */
     public boolean transferMoney(String srcPassport, String srcRequisite, String destPassport, String dstRequisite, double amount) {
         Account srcAccount = findAccount(srcPassport, srcRequisite);
@@ -119,9 +119,10 @@ public class Bank {
      * @return true если account существует , true ели null
      */
     private Account findAccount(String passport, String requisite) {
-        List<Account> accounts = this.getUserAccounts(passport);
-        int index = accounts.indexOf(new Account(0, requisite));
-        return index != -1 ? accounts.get(index) : null;
+       return this.getUserAccounts(passport).stream()
+                .filter(account -> account.equals(new Account(0, requisite)))
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -130,14 +131,9 @@ public class Bank {
      * @return true если user существует , true ели null
      */
     private User findUser(String passport) {
-        User result = null;
-        Set<User> keys = this.users.keySet();
-        for (User key : keys) {
-            if (key != null && key.getPassport().equals(passport)) {
-                result = key;
-                break;
-            }
-        }
-        return result;
+        return this.users.keySet().stream()
+                .filter(user -> user != null && user.getPassport().equals(passport))
+                .findFirst()
+                .orElse(null);
     }
 }

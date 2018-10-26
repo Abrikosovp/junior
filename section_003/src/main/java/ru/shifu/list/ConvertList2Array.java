@@ -23,7 +23,6 @@ public class ConvertList2Array {
         int cells = list.size() % rows > 0 ? list.size() / rows + 1 : list.size() / rows;
         int[][] array = new int[rows][cells];
         ListIterator<Integer> iterator = list.listIterator();
-        Spliterator<Integer> spliterato = list.spliterator();
         for (int[] row : array) {
             for (int index = 0; index < row.length; index++) {
                 if (iterator.hasNext()) {

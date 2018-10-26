@@ -2,6 +2,7 @@ package ru.shifu.search;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * PhoneDictionary имитирует справочник , и поиск человека в нем по адресу , тел и тд.
@@ -29,15 +30,17 @@ public class PhoneDictionary {
      * @return person.
      */
     public List<Person> find(String key) {
-        List<Person> result = new ArrayList<>();
-        for (Person person : this.persons) {
-            if (person.getAddress().contains(key)
-            || person.getName().contains(key)
-            || person.getPhone().contains(key)
-            || person.getSurname().contains(key)) {
-                result.add(person);
-                break;
-            }
+        return this.persons.stream()
+                .filter(person -> person != null && findKey(person, key))
+                .collect(Collectors.toList());
+    }
+    private boolean findKey(Person person, String key) {
+        boolean result = false;
+        if (person.getAddress().contains(key)
+                || person.getName().contains(key)
+                || person.getPhone().contains(key)
+                || person.getSurname().contains(key)) {
+            result = true;
         }
         return result;
     }
