@@ -2,6 +2,8 @@ package ru.shifu.tracker;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Tracker .
@@ -58,14 +60,8 @@ public class Tracker {
      * @param id для удаления необходимо найти ячейку в массиве по id.
      */
     public void delete(String id) {
-        Item result = null;
-        for (Item value : this.items) {
-            if (value.getId().equals(id)) {
-                result = value;
-                break;
-            }
-        }
-        this.items.remove(result);
+        Item item = this.findByPredicate(value -> value.getId().equals(id));
+        this.items.remove(item);
     }
     /**
      * Метод получение списка всех заявок.
@@ -80,14 +76,9 @@ public class Tracker {
      * @return массив со списком собранный по имени.
      */
     public ArrayList<Item> findByName(String key) {
-        ArrayList<Item> result = new ArrayList<>();
-        for (Item value : this.items) {
-            if (value.getName().equals(key)) {
-                result.add(value);
-                break;
-            }
-        }
-        return result;
+        return key == null ? null : this.items.stream()
+                .filter(item -> item.getName().equals(key))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
     /**
      * Метод получение заявки по id.
@@ -95,13 +86,14 @@ public class Tracker {
      * @return item - заявка.
      */
     public Item findById(String id) {
-        Item result = null;
-        for (Item value:this.items) {
-            if (value != null && value.getId().equals(id)) {
-                result = value;
-            }
-        }
-        return result;
+        return this.findByPredicate(item -> item.getId().equals(id));
+    }
+
+    private Item findByPredicate(Predicate<Item> predicate) {
+        return this.items.stream()
+                .filter(item -> item != null && predicate.test(item))
+                .findFirst()
+                .orElse(null);
     }
 }
 
