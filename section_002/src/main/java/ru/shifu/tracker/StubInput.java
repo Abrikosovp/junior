@@ -1,5 +1,7 @@
 package ru.shifu.tracker;
 
+import java.util.List;
+
 public class StubInput implements Input {
     /**
      * Это поле содержит последовательность ответов пользователя.
@@ -39,7 +41,7 @@ public class StubInput implements Input {
      * @return  ответ который пользователь введет с клавиатуры.
      */
     @Override
-    public int ask(String question, int[] range) {
+    public int ask(String question, List<Integer> range) {
         boolean exist = false;
         int key = Integer.valueOf(this.ask(question));
         for (int value : range) {

@@ -1,8 +1,11 @@
 package ru.shifu.tracker;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Внутренний класс ExitProgram = 6
@@ -85,12 +88,10 @@ public class MenuTracker {
      *
      * @return range.
      */
-    public int[] getFullRange() {
-        int[] range = new int[getActionsLength()];
-        for (int index = 0; index != this.getActionsLength(); index++) {
-            range[index] = index;
-        }
-        return range;
+    public List<Integer> getFullRange() {
+    return IntStream.rangeClosed(0, getActionsLength())
+            .boxed()
+            .collect(Collectors.toList());
     }
 
     /**

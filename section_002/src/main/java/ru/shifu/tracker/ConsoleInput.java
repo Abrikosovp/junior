@@ -1,5 +1,6 @@
 package ru.shifu.tracker;
 
+import java.util.List;
 import java.util.Scanner;
 /**
  * ConsoleInput ввода/вывода данных от пользователя .
@@ -32,7 +33,7 @@ public class ConsoleInput implements Input {
      * @return  ответ который пользователь введет с клавиатуры.
      */
     @Override
-    public int ask(String question, int[] range) {
+    public int ask(String question, List<Integer> range) {
         boolean exist = false;
         int key = Integer.valueOf(this.ask(question));
         for (int value : range) {

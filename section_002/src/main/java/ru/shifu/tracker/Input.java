@@ -1,4 +1,7 @@
 package ru.shifu.tracker;
+
+import java.util.List;
+
 /**
  * Input ввода/вывода данных от пользователя .
  *
@@ -19,7 +22,7 @@ public interface Input {
      * @return
      */
 
-    int ask(String question, int[] range);
+    int ask(String question, List<Integer> range);
 
 
 }
