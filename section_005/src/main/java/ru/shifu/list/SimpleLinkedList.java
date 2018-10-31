@@ -47,6 +47,18 @@ public class SimpleLinkedList<E> implements Iterable<E> {
         this.elementsCount++;
     }
 
+    public void insertFirst(E value) {
+        Node<E> first = head;
+        Node<E> newNode = new Node<>(null, value, first);
+        head = newNode;
+        if (first == null) {
+            tail = newNode;
+        } else {
+            first.preStep = newNode;
+        }
+        elementsCount++;
+    }
+
     /**
      * Метод удаления первого элемента в списке.
      * @return элемент.
