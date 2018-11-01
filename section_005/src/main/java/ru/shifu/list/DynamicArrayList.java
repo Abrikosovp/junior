@@ -96,21 +96,12 @@ public class DynamicArrayList<T> implements SimpleContainer<T> {
      */
     public int indexOf(Object value) {
         int result = -1;
-        if (value == null) {
             for (int i = 0; i < this.elementsCount; i++) {
-                if (container[i] == null) {
+                if (container[i] == null  || value.equals(container[i])) {
                     result = i;
                     break;
                 }
             }
-        } else {
-            for (int i = 0; i < this.elementsCount; i++) {
-                if (value.equals(container[i])) {
-                    result = i;
-                    break;
-                }
-            }
-        }
         return result;
     }
 

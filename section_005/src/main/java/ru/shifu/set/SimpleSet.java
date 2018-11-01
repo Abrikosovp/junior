@@ -11,7 +11,7 @@ import java.util.Iterator;
  **/
 public class SimpleSet<E> implements Iterable<E> {
 
-    DynamicArrayList array;
+    private DynamicArrayList array;
 
     public SimpleSet() {
         array = new DynamicArrayList();
