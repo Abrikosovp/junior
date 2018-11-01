@@ -81,6 +81,40 @@ public class DynamicArrayList<T> implements SimpleContainer<T> {
     }
 
     /**
+     * Метод проверяет что в коллекции элемент присутствует.
+     * @param value данные.
+     * @return true / false
+     */
+    public boolean contains(Object value) {
+        return indexOf(value) >= 0;
+    }
+
+    /**
+     * Метод ищет в коллекции елемент или null.
+     * @param value данные.
+     * @return индекс элемента если рписутствует , -1 если нет
+     */
+    public int indexOf(Object value) {
+        int result = -1;
+        if (value == null) {
+            for (int i = 0; i < this.elementsCount; i++) {
+                if (container[i] == null) {
+                    result = i;
+                    break;
+                }
+            }
+        } else {
+            for (int i = 0; i < this.elementsCount; i++) {
+                if (value.equals(container[i])) {
+                    result = i;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
      * Метод проверяет что индекс ввели в нужном диапазоне.
      * @param index индекс элемента.
      */

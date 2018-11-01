@@ -41,4 +41,11 @@ public class NodeTest {
         first = null;
         assertThat(Node.hasCycle(first), is(false));
     }
+
+    @Test
+    public void whenNotCycleList() {
+        four.next = null;
+        boolean result = Node.hasCycle(first);
+        assertThat(result, is(false));
+    }
 }

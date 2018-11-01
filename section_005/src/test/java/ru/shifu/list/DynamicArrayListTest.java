@@ -138,4 +138,13 @@ public class DynamicArrayListTest {
         Iterator<Integer> it = list.iterator();
         it.next();
     }
+
+    @Test
+    public void shouldThrowNoSuchElement() {
+        list = new DynamicArrayList<>();
+        list.add(null);
+        assertThat(list.indexOf(null), is(0));
+        list.add(null);
+        assertThat(list.indexOf(null), is(0));
+    }
 }
