@@ -63,57 +63,64 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         return rsl;
     }
 
-    @Override
-    public Iterator<E> iterator() {
-        return new NewIterator(this.root);
+    public boolean isBinary() {
+        boolean result = true;
+        Queue<Node<E>> data = new LinkedList<>();
+        data.offer(this.root);
+        while (!data.isEmpty()) {
+            Node<E> el = data.poll();
+            if (el != null && el.leaves().size() > 2) {
+                result = false;
+                break;
+            }
+            for (Node<E> child : el.leaves()) {
+                data.offer(child);
+            }
+        }
+        return result;
     }
 
-    private class NewIterator<E extends Comparable<E>> implements Iterator<E> {
-        /**
-         * Корень
-         */
-        private final Node<E> root;
-        /**
-         * Хранилище временное.
-         */
-        private final Queue<Node<E>> inDate = new LinkedList<>();
-        private final int expectedModCount = modCount;
+    @Override
+    public Iterator<E> iterator() {
 
-        NewIterator(Node<E> root) {
-            this.root = root;
-            initialization();
-        }
+        return new Iterator<E>() {
 
-        @Override
-        public boolean hasNext() {
-            if (this.expectedModCount != modCount) {
-                throw new ConcurrentModificationException();
-            }
-            return !this.inDate.isEmpty();
-        }
+            /**
+             * Хранилище временное.
+             */
+            private final LinkedList<Node<E>> inDate = new LinkedList<>(Collections.singletonList(root));
+            private final int expectedModCount = modCount;
 
-        /**
-         * Метод отгружает все элементы из дерева в idDate.
-         */
-        private void initialization() {
-            Queue<Node<E>> data = new LinkedList<>();
-            data.offer(this.root);
-            while (!data.isEmpty()) {
-                Node<E> el = data.poll();
-                inDate.offer(el);
 
-                for (Node<E> child : el.leaves()) {
-                    data.offer(child);
+            /**
+             * Метод проверяет что список не пуст.
+             * @return true / false
+             */
+            @Override
+            public boolean hasNext() {
+                if (this.expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
                 }
+                return !inDate.isEmpty();
             }
-        }
 
-        @Override
-        public E next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException();
+            /**
+             * Метод достает значение поэлементно из дерва.
+             * @return value.
+             */
+            @Override
+            public E next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                E elem = null;
+                if (inDate.size() != 0) {
+                    Node<E> firstElem = inDate.pollFirst();
+                    inDate.addAll(firstElem.leaves());
+                    elem = firstElem.getValue();
+                }
+                return elem;
             }
-            return inDate.poll().getValue();
-        }
+        };
     }
 }

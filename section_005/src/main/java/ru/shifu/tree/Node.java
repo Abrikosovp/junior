@@ -28,7 +28,9 @@ public class Node<E extends Comparable<E>> {
      * @param value child.
      */
     public void add(Node<E> value) {
-        this.children.add(value);
+        if (!children.contains(value)) {
+            this.children.add(value);
+        }
     }
 
     /**
