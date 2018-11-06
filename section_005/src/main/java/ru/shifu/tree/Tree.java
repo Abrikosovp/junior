@@ -33,13 +33,15 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
     public boolean add(E parent, E child) {
         AtomicBoolean result = new AtomicBoolean(false);
         Optional<Node<E>> rsl = this.findBy(parent);
-        rsl.ifPresent(i -> {
-            i.add(new Node<>(child));
-            result.set(true);
-            modCount++;
-        });
+        if (find(child)) {
+            rsl.ifPresent(i -> {
+                i.add(new Node<>(child));
+                result.set(true);
+                modCount++;
+            });
+        }
         return result.get();
-    }
+        }
 
     /**
      * Метод для поиска элементов в дереве.
@@ -63,6 +65,34 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         return rsl;
     }
 
+    /**
+     * Метод проверяет что никакие узлы в дереве
+     * не должны иметь двух одинаковых дочерних узлов.
+     * @param childValue
+     * @return true / false
+     */
+    public boolean find(E childValue) {
+        boolean result = true;
+        Queue<Node<E>> data = new LinkedList<>();
+        data.offer(this.root);
+        while (!data.isEmpty()) {
+            Node<E> el = data.poll();
+            if (!el.contains(childValue)) {
+               result = false;
+               break;
+            }
+            for (Node<E> child : el.leaves()) {
+                data.offer(child);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Метод проверяет количество дочерних элементов в дереве
+     * они не должны превышать 2х
+     * @return true / false
+     */
     public boolean isBinary() {
         boolean result = true;
         Queue<Node<E>> data = new LinkedList<>();

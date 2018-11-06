@@ -56,4 +56,8 @@ public class Node<E extends Comparable<E>> {
     public E getValue() {
         return value;
     }
+
+    public boolean contains(E childValue) {
+        return children.stream().noneMatch(value -> value.value.equals(childValue));
+    }
 }
