@@ -22,7 +22,7 @@ public class RectangleMove implements Runnable {
         boolean checkForX = false;
         boolean checkForY = false;
 
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
 
             if (this.rect.getX() == 0) {
                 checkForX = false;
@@ -51,6 +51,7 @@ public class RectangleMove implements Runnable {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 System.out.println("Вы вышли ил игры Ping-Pong");
             }
         }
