@@ -29,7 +29,6 @@ public class SimpleBlockingQueue<T> {
                 try {
                     this.wait();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                     Thread.currentThread().interrupt();
                 }
             }
@@ -45,7 +44,6 @@ public class SimpleBlockingQueue<T> {
                 try {
                     this.wait();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                     Thread.currentThread().interrupt();
                 }
             }
@@ -53,5 +51,9 @@ public class SimpleBlockingQueue<T> {
             this.notifyAll();
             return this.queue.poll();
         }
+    }
+
+    public boolean isEmpty() {
+        return this.queue.isEmpty();
     }
 }
