@@ -1,4 +1,7 @@
 package ru.shifu.jmm;
+
+import org.junit.Test;
+
 /**
  * ProblemConcurrentCounter.
  *
@@ -10,7 +13,8 @@ public class ProblemConcurrentCounter {
     public static final int N = 1_000_000;
     public static int count = 0;
 
-    public static void main(String[] args) throws InterruptedException {
+    @Test
+    public void when() throws InterruptedException {
         /**
          * Поток 1 , который инкрементит счетчик count
          */

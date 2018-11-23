@@ -1,4 +1,7 @@
 package ru.shifu.jmm;
+
+import org.junit.Test;
+
 /**
  * ProblemCacheReset.
  *
@@ -6,13 +9,13 @@ package ru.shifu.jmm;
  * @version 1.
  * @since 19.11.2018.
  **/
-public class ProblemCacheReset {
+public class ProblemCacheResetTest {
     /**
      * счетчик
      */
     private static int counter = 0;
-
-    public static void main(String[] args) throws InterruptedException {
+    @Test
+    public void when() throws InterruptedException {
 
         /**
          * Запускаем новый поток ,

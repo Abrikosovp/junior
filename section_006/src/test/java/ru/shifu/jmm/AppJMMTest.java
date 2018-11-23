@@ -1,4 +1,7 @@
 package ru.shifu.jmm;
+
+import org.junit.Test;
+
 /**
  * AppJMM.
  *
@@ -6,7 +9,7 @@ package ru.shifu.jmm;
  * @version 1.
  * @since 19.11.2018.
  **/
-public class AppJMM {
+public class AppJMMTest {
     /**
      * Флаг.
      */
@@ -16,7 +19,8 @@ public class AppJMM {
      */
     static String data;
 
-    public static void main(String[] args) {
+    @Test
+    public void when() {
         /**
          * Запускаем первый поток:
          * спит секунду (готовлю данные),

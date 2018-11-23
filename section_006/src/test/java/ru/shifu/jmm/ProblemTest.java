@@ -1,12 +1,15 @@
 package ru.shifu.jmm;
+
+import org.junit.Test;
+
 /**
- * Problem.
+ * ProblemTest.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru).
  * @version 1.
  * @since 29.10.2018.
  **/
-public class Problem {
+public class ProblemTest {
     /**
      * счетчик
      */
@@ -15,12 +18,12 @@ public class Problem {
     /**
      * Основной поток, который приводит в действие
      * два тестовых потока.
-     * @param args
      */
-    public static void main(String[] args) {
-        Problem problem = new Problem();
-        new Thread(problem.new Task()).start();
-        new Thread(problem.new Task()).start();
+    @Test
+    public void when() {
+        ProblemTest problemTest = new ProblemTest();
+        new Thread(problemTest.new Task()).start();
+        new Thread(problemTest.new Task()).start();
     }
 
     /**
