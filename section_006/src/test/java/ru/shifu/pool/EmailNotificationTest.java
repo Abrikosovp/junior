@@ -16,7 +16,7 @@ public class EmailNotificationTest {
     public void whenAddTen() {
         EmailNotification email = new EmailNotification();
         for (int index = 0; index < 5; index++) {
-            email.emailTo(new User("User #" + index, "email #" + index));
+            email.emailTo(new User("BomberMan #" + index, "email #" + index));
         }
         email.close();
     }

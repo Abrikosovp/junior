@@ -5,13 +5,13 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * UserStorageTest.
+ * BomberManStorageTest.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru).
  * @version 1.
  * @since 20.11.2018.
  **/
-public class UserStorageTest {
+public class BomberManStorageTest {
     UserStorage userStorage;
     User user;
     boolean result;

@@ -19,6 +19,7 @@ public class ThreadPool {
         for (int index = 0; index < Runtime.getRuntime().availableProcessors(); index++) {
             threads.add(new PoolWorker(tasks, index));
         }
+        this.threads.forEach(Thread::start);
     }
 
     public void work(Runnable job) {
@@ -47,7 +48,6 @@ public class ThreadPool {
 
         public PoolWorker(SimpleBlockingQueue<Runnable> tasks, int index) {
             this.t = tasks;
-            this.start();
             System.out.println(String.format("Thread %s is started", index));
         }
 

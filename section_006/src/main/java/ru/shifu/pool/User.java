@@ -1,6 +1,6 @@
 package ru.shifu.pool;
 /**
- * User.
+ * BomberMan.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru).
  * @version 1.

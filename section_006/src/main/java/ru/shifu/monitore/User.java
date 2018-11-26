@@ -2,7 +2,7 @@ package ru.shifu.monitore;
 
 import java.util.Objects;
 /**
- * User.
+ * BomberMan.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru).
  * @version 1.
