@@ -93,7 +93,7 @@ public class BomberManGame {
         for (int index = 0; index != monsterNumber; index++) {
             do {
                 cell = randomCall();
-            } while (!this.bord[cell.getPosX()][cell.getPosY()].tryLock(50, TimeUnit.MILLISECONDS));
+            } while (!this.bord[cell.getPosX()][cell.getPosY()].tryLock(500, TimeUnit.MILLISECONDS));
             this.monsters.add(new Monster(cell, index));
         }
     }
@@ -159,9 +159,13 @@ public class BomberManGame {
                 Cell source = bomberMan.getPosition();
                 bord[source.getPosY()][source.getPosY()].lock();
 
-                while (true) {
+                while (!Thread.currentThread().isInterrupted()) {
                     try {
                         source = bomberMan.getPosition();
+                        if (bord[source.getPosY()][source.getPosY()].hasQueuedThreads()) {
+                            Thread.currentThread().interrupt();
+                        }
+
                         Cell desc = nextStep(source);
                         if (strokeLimit(desc)) {
                             move(source, desc);
@@ -170,7 +174,8 @@ public class BomberManGame {
                         }
                         sleep(1000);
                     } catch (InterruptedException e) {
-                        System.out.println("BomberMan error");
+                        System.out.println("BomberMan game over");
+                        Thread.currentThread().interrupt();
                     }
                 }
             }
@@ -206,8 +211,10 @@ public class BomberManGame {
                 }
             }
         };
+        Thread.sleep(1000);
         bomberMove.start();
+        monster.setDaemon(true);
         monster.start();
-        Thread.sleep(40000);
+        bomberMove.join();
    }
 }

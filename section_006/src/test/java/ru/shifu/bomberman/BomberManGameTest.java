@@ -13,7 +13,7 @@ public class BomberManGameTest {
 
     @Test
     public void whenMovesAndRestedInBorderThenNextMove() throws InterruptedException {
-        BomberManGame game = new BomberManGame(10, 10, 2);
+        BomberManGame game = new BomberManGame(3, 3, 2);
         game.startGames();
     }
 }
