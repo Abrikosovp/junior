@@ -35,6 +35,6 @@ public class Cell {
 
     @Override
     public String toString() {
-        return String.format("(Cell x = %s, y = %s", this.posX, this.posY);
+        return String.format("(Cell x = %s, y = %s)", this.posX, this.posY);
     }
 }
