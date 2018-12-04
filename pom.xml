@@ -20,6 +20,7 @@
         <module>section_004</module>
         <module>section_005</module>
         <module>section_006</module>
+        <module>section_007</module>
     </modules>
 <dependencies>
     <dependency>
