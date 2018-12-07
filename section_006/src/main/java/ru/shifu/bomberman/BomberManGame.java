@@ -215,6 +215,7 @@ public class BomberManGame {
         bomberMove.start();
         monster.setDaemon(true);
         monster.start();
-        bomberMove.join();
+//        bomberMove.join();
+       Thread.sleep(20000);
    }
 }
