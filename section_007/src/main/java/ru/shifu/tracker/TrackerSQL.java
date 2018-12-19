@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TrackerSQL implements ITracker, AutoCloseable {
 
-    Connection conn = null;
+     Connection conn = null;
 
     public TrackerSQL() {
         getConnection();
