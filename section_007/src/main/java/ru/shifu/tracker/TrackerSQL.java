@@ -1,31 +1,28 @@
 package ru.shifu.tracker;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Item
+ * @author Pavel Abrikosov(abrikosovp@mail.ru)
+ * @version 0.1$
+ * @since 0.1
+ * 26.12.2018
+ */
 public class TrackerSQL implements ITracker, AutoCloseable {
 
-     Connection conn = null;
+    private static final Logger LOG = LogManager.getLogger(TrackerSQL.class.getName());
+    private Connection conn = null;
 
-    public TrackerSQL() {
-        getConnection();
-        initializationTable();
-    }
 
-    /**
-     * Метод подключения к серверу базы данных.
-     */
-    private void getConnection() {
-        String uml = "jdbc:postgresql://localhost:5432/items";
-        String name = "root";
-        String password = "root";
-        try {
-            this.conn = DriverManager.getConnection(uml, name, password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public TrackerSQL(Connection connection) {
+        this.conn = connection;
+        this.initializationTable();
     }
 
     /**
@@ -36,7 +33,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
                 "CREATE table if not exists items (id serial primary key, name character varying(2000), description text)")) {
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            this.LOG.error(e.getMessage(), e);
         }
     }
 
@@ -55,7 +52,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
                     item.setId(rs.getInt(1));
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                this.LOG.error(e.getMessage(), e);
             }
         return item;
     }
@@ -78,7 +75,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
                         rs.getInt("id"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            this.LOG.error(e.getMessage(), e);
         }
         return item;
     }
@@ -99,7 +96,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
             ps.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            this.LOG.error(e.getMessage(), e);
         }
         return result;
     }
@@ -117,7 +114,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
             ps.executeUpdate();
             result = true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            this.LOG.error(e.getMessage(), e);
         }
         return result;
     }
@@ -135,7 +132,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
                 result.add(new Item(rs.getString("name"), rs.getString("description")));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            this.LOG.error(e.getMessage(), e);
         }
         return result;
     }
@@ -155,18 +152,21 @@ public class TrackerSQL implements ITracker, AutoCloseable {
                 result.add(new Item(rs.getString("name"), rs.getString("description"), rs.getInt("id")));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            this.LOG.error(e.getMessage(), e);
         }
         return result;
     }
     /**
      * Close resources.
-     * @throws Exception exception.
      */
     @Override
-    public void close() throws Exception {
+    public void close() {
         if (this.conn != null) {
-            conn.close();
+            try {
+                this.conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

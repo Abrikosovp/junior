@@ -143,7 +143,7 @@ public class BomberManGame {
      * @param dest ячейка в которую совершается ход.
      * @return true / false
      */
-   public synchronized boolean strokeLimit(Cell dest) {
+   public boolean strokeLimit(Cell dest) {
        return (!(dest.getPosX() < 0
                || dest.getPosX() > this.size - 1
                || dest.getPosY() < 0

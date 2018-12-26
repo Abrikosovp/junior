@@ -1,5 +1,8 @@
 package ru.shifu.magnit;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,6 +21,7 @@ import java.util.Properties;
  *  18.12.2018
  */
 public class StoreSQL implements AutoCloseable {
+    private static final Logger LOGGER = LogManager.getLogger(StoreSQL.class);
     /**
      * Connection to SQLite database.
      */
@@ -31,9 +35,9 @@ public class StoreSQL implements AutoCloseable {
         try {
             prop.load(new FileInputStream(config));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
         String url = String.valueOf(prop.getProperty("CONNECT_TO_DB"));
 
@@ -41,7 +45,7 @@ public class StoreSQL implements AutoCloseable {
             connect = DriverManager.getConnection(url);
             connect.setAutoCommit(false);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -54,7 +58,7 @@ public class StoreSQL implements AutoCloseable {
             statement.executeUpdate("DROP TABLE IF EXISTS entry");
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS  entry (field INTEGER )");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -68,11 +72,12 @@ public class StoreSQL implements AutoCloseable {
         try (PreparedStatement statement = connect.prepareStatement("INSERT INTO entry(field) VALUES(?) ")) {
             for (int index = 1; index <= n; index++) {
                statement.setInt(1, index);
-               statement.executeUpdate();
+               statement.addBatch();
             }
+            statement.executeBatch();
             connect.commit();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
             connect.rollback();
         }
         System.out.println(String.format("%s elements inserted", n));
@@ -93,7 +98,7 @@ public class StoreSQL implements AutoCloseable {
             }
             rs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
         return result;
     }
@@ -103,7 +108,7 @@ public class StoreSQL implements AutoCloseable {
         try {
             connect.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
     }
 }

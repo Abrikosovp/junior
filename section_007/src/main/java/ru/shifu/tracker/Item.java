@@ -1,7 +1,13 @@
 package ru.shifu.tracker;
 
 import java.util.Objects;
-
+/**
+ * Item
+ * @author Pavel Abrikosov(abrikosovp@mail.ru)
+ * @version 0.1$
+ * @since 0.1
+ * 26.12.2018
+ */
 public class Item {
     private int id;
     private String name;

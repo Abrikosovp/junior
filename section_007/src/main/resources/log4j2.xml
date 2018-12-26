@@ -6,10 +6,9 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="ru.shifu.principle_004" level="trace" additivity="false">
+        <Logger name="ru.shifu" level="trace" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
-
         <Root level="error">
             <AppenderRef ref="Console"/>
         </Root>
