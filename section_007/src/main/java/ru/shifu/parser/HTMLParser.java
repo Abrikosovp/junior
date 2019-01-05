@@ -16,6 +16,7 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * The class scans the forum skl.ru, finds jobs java developer.
@@ -196,11 +197,6 @@ public class HTMLParser {
      * @return true if vacancy header contains "Java" else false.
      */
     private boolean isValidName(String name) {
-        boolean result = false;
-        name = name.toLowerCase();
-        if (name.contains("java") && !name.contains("javascript") && !name.contains("java script") && !name.contains("js")) {
-            result = true;
-        }
-        return result;
+        return Pattern.compile("\\b[Jj][Aa][Vv][Aa]\\b[^Jj]").matcher(name).find();
     }
 }

@@ -54,7 +54,8 @@ public class DBVacancy implements Closeable {
             st.setString(1, vacancy.getName());
             st.setString(2, vacancy.getHref());
             st.setTimestamp(3, Timestamp.valueOf(vacancy.getDate()));
-            st.executeUpdate();
+            st.addBatch();
+            st.executeBatch();
             this.LOGGER.info(String.format("vacancy %s - %s - %s", vacancy.getDate(), vacancy.getName(), vacancy.getHref()));
             valid = true;
         } catch (SQLException e) {
