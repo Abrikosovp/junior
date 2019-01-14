@@ -19,7 +19,7 @@ public class StoreXMLTest {
     @Test
     public void name() {
         StoreSQL sql = new StoreSQL();
-        sql.setConnection(new File("config.ini"));
+        sql.setConnection(new File("config.properties"));
         sql.createStructure();
         try {
             sql.generate(10);

@@ -67,8 +67,8 @@
             </activation>
             <properties>
                 <db.url>jdbc:postgresql://localhost/tracker</db.url>
-                <db.username>root</db.username>
-                <db.password>root</db.password>
+                <db.username>postgres</db.username>
+                <db.password>postgres</db.password>
                 <db.driver>org.postgresql.Driver</db.driver>
             </properties>
         </profile>
@@ -78,8 +78,8 @@
 
             <properties>
                 <db.url>jdbc:postgresql://localhost/tracker</db.url>
-                <db.username>root</db.username>
-                <db.password>root</db.password>
+                <db.username>postgres</db.username>
+                <db.password>postgres</db.password>
                 <db.driver>org.postgresql.Driver</db.driver>
             </properties>
         </profile>
@@ -91,7 +91,7 @@
             </activation>
             <properties>
                 <db.url>jdbc:postgresql://localhost/tracker</db.url>
-                <db.username>root</db.username>
+                <db.username>postgres</db.username>
                 <db.password></db.password>
                 <db.driver>org.postgresql.Driver</db.driver>
             </properties>

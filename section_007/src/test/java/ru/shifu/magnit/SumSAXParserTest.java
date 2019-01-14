@@ -15,7 +15,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class SumSAXParserTest {
-    File cfg = new File("config.ini");
+    File cfg = new File("config.properties");
     File xmlOne = new File("storexml.xml");
     File xmlTwo = new File("newstorexml.xml");
     File xls = new File("scheme.xsl");

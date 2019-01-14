@@ -15,7 +15,7 @@ public class StoreSQLTest {
     @Test
     public void whenAddTenElementsAndSelectThanTrue() {
         StoreSQL sql = new StoreSQL();
-        sql.setConnection(new File("config.ini"));
+        sql.setConnection(new File("config.properties"));
         sql.createStructure();
         try {
             sql.generate(10);

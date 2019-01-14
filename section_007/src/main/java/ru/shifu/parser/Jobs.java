@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -26,7 +27,11 @@ public class Jobs implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) {
         this.LOGGER.info("Parser starting.");
-        this.parse.parse();
+        try {
+            this.parse.getDoc();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.LOGGER.info("Stop parsing.");
     }
     /**

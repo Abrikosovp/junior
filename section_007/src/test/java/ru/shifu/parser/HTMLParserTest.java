@@ -3,6 +3,8 @@ package ru.shifu.parser;
 import org.junit.Test;
 import ru.shifu.tracker.ConnectionRollback;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import static org.hamcrest.Matchers.is;
@@ -17,13 +19,12 @@ import static org.junit.Assert.assertThat;
 public class HTMLParserTest {
 
     @Test
-    public void test() throws SQLException {
+    public void test() throws SQLException, IOException {
             ConnectTest test = new ConnectTest();
             HTMLParser parser = new HTMLParser(ConnectionRollback.create(test.init()));
-            DBVacancy dbVacancy = new DBVacancy(test.init());
-            parser.parse();
-
-            List<Vacancy> list = dbVacancy.getAll();
-            assertThat(list.size(), is(0));
+            new DBVacancy(test.init());
+            parser.getPages("http://www.sql.ru/forum/job-offers");
+            List<Vacancy> result = parser.parseFile(new File(getClass().getClassLoader().getResource("ParserTestHtml.html").getFile()));
+            assertThat(result.size(), is(18));
     }
 }

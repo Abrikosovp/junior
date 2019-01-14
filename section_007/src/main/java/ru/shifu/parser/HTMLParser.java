@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -61,19 +62,41 @@ public class HTMLParser {
     }
 
     /**
-     * Creates a document with a url.
-     * @param url of html document.
-     * @return document is based on the html page.
+     * Collects data from the pages of the site.
+     * In each cycle, adds the following number to the address, starting with one.
+     * @throws IOException If it is impossible to connect to the site.
      */
-    private Document getDoc(String url) {
-        Document doc = null;
-        try {
-            doc = Jsoup.connect(url).get();
-        } catch (IOException e) {
-            this.LOGGER.error("ERROR", e);
+    public void getDoc() throws IOException {
+        this.vac.clear();
+        String url;
+
+        int pages =  getPages(this.url);
+        LOGGER.info(String.format("Total pages to parse: %s", pages));
+
+        for (int page = 1; page <= pages; page++) {
+            url = String.format("%s/%s", this.url, page);
+            LOGGER.info(String.format("Parsing page %s of %s pages.", page, pages));
+
+            Document doc = Jsoup.connect(url).get();
+            this.parse(doc);
         }
-        return doc;
+
+        this.sql.insertVacancies(vac);
+        LOGGER.info(String.format("Total vacancies found: %s.", vac.size()));
     }
+    /**
+     * Collects data from an HTML file.
+     * @param file file to collect data.
+     * @throws IOException throws out when it is impossible to connect to the file.
+     */
+    public List<Vacancy> parseFile(File file) throws IOException {
+        this.vac.clear();
+        Document doc = Jsoup.parse(file, "UTF-8");
+        this.parse(doc);
+        this.sql.insertVacancies(vac);
+        return vac;
+    }
+
 
     /**
      * Method searches vacancies from url.
@@ -82,17 +105,8 @@ public class HTMLParser {
      * Also, if the topic matches the date, it analyzes the first message by the publication date and the Java programmer's filter.
      * If all conditions are met, add to the job list.
      */
-    public void parse() {
-        String pageUrl;
-        int pages =  getPages(this.url);
-        LOGGER.info(String.format("Total pages to parse: %s", pages));
+    public void parse(Document doc) {
 
-        for (int page = 1; page <= pages; page++) {
-
-            pageUrl = String.format("%s/%s", this.url, page);
-            LOGGER.info(String.format("Parsing page %s of %s pages.", page, pages));
-
-            Document doc = getDoc(pageUrl);
             Element table = doc.select("table.forumTable").first();
             Elements tr = table.select("tr");
 
@@ -108,10 +122,6 @@ public class HTMLParser {
                         }
                     })
             );
-        }
-        this.sql.addMultiVac(vac);
-        this.vac.clear();
-        LOGGER.info(String.format("Total vacancies found: %s.", vac.size()));
     }
 
     /**
@@ -178,7 +188,7 @@ public class HTMLParser {
      * @return number of pages.
      * @throws IOException if can't get document.
      */
-    private int getPages(String url)  {
+    public int getPages(String url)  {
         Document doc = null;
         try {
             doc = Jsoup.connect(url).get();
