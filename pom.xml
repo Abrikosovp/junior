@@ -21,6 +21,7 @@
         <module>section_005</module>
         <module>section_006</module>
         <module>section_007</module>
+        <module>section_008</module>
     </modules>
 
     <dependencies>
