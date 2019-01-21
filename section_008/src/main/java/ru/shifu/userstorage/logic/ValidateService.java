@@ -126,4 +126,8 @@ public class ValidateService {
     public List<User> findAll() {
         return store.findAll();
     }
+
+    public User findById(String id) {
+        return this.store.findById(id);
+    }
 }

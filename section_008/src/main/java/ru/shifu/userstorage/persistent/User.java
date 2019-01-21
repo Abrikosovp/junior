@@ -33,9 +33,23 @@ public class User {
         return name;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
     @Override
     public String toString() {
         return String.format("User id: %s, Name: %s, Login: %s, Email: %s, Create date: %s \n",
                 id, name, login, email, createDate);
     }
+
+
 }

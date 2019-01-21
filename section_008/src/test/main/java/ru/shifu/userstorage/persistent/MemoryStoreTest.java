@@ -35,7 +35,7 @@ public class MemoryStoreTest {
     @Test
     public void whenUpdateUserThanUpdated() {
         this.store.update(this.findBy);
-        assertThat(this.store.findById(this.findBy).getName(), is("updated first"));
+        assertThat(this.store.findById(this.findBy.getId()).getName(), is("updated first"));
 
         assertThat(
                 this.store.update(
@@ -48,7 +48,7 @@ public class MemoryStoreTest {
     @Test
     public void whenDeleteUserThanDeleted() {
         assertTrue(this.store.delete(this.user1));
-        assertNull(this.store.findById(this.user1));
+        assertNull(this.store.findById(this.user1.getId()));
         assertThat(this.store.delete(new User("22", "updated first", "updated first login", "ufirst@mail.ru")), is(false));
         User user = new User("33", "updated first", "updated first login", "ufirst@mail.ru");
         User user2 = new User("33", "updated first", "updated first login", "ufirst@mail.ru");

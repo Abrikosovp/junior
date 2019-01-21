@@ -77,12 +77,12 @@ public class MemoryStore implements Store {
     }
     /**
      * Searches user by id.
-     * @param user to search.
+     * @param id to search.
      * @return founded user.
      */
     @Override
-    public User findById(User user) {
-        return store.get(user.getId());
+    public User findById(String id) {
+        return store.get(id);
     }
 
     public void deleteAll() {
