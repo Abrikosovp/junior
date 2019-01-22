@@ -3,6 +3,7 @@ package ru.shifu.userstorage.presentation;
 import ru.shifu.userstorage.logic.ValidateService;
 import ru.shifu.userstorage.persistent.User;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +13,7 @@ import java.io.PrintWriter;
  * Servlet to update existed user.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.1$
+ * @version 0.2$
  * @since 0.1
  * 21.01.2019
  */
@@ -52,8 +53,7 @@ public class UserUpdateServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         new UserServlet().doPost(request, response);
-        new UsersServlet().doGet(request, response);
     }
 }

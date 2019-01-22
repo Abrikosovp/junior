@@ -4,6 +4,7 @@ import ru.shifu.userstorage.logic.Action;
 import ru.shifu.userstorage.logic.ValidateService;
 import ru.shifu.userstorage.persistent.User;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +18,7 @@ import java.util.Random;
  * Presentation layout.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.1$
+ * @version 0.2$
  * @since 0.1
  * 18.01.2019
  */
@@ -47,7 +48,7 @@ public class UserServlet extends HttpServlet {
 
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
         response.setContentType("text/html;charset=UTF-8");
 
@@ -63,12 +64,9 @@ public class UserServlet extends HttpServlet {
         String login = request.getParameter("login");
         String email = request.getParameter("email");
         User user = new User(id, name, login, email);
-
-
-        PrintWriter writer = new PrintWriter(response.getOutputStream());
         String result = this.validate.doAction(act, user);
 
-        writer.append(result);
-        writer.flush();
+        request.setAttribute("result", result);
+        request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 }

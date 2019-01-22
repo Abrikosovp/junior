@@ -1,5 +1,6 @@
 package ru.shifu.userstorage.presentation;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,7 +10,7 @@ import java.io.PrintWriter;
  * Servlet to create new users.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.1$
+ * @version 0.2$
  * @since 0.1
  * 21.01.2019
  */
@@ -40,8 +41,7 @@ public class UserCreateServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         new UserServlet().doPost(request, response);
-        new UsersServlet().doGet(request, response);
     }
 }
