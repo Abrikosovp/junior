@@ -1,12 +1,13 @@
 package ru.shifu.userstorage.persistent;
 
 import java.util.Date;
+import java.util.Random;
 
 /**
  * Simple model of data.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.1$
+ * @version 0.2$
  * @since 0.1
  * 18.01.2019
  */
@@ -16,6 +17,19 @@ public class User {
     private String login;
     private String email;
     private Date createDate;
+
+    /**
+     * To generate a random id.
+     */
+    private final Random rn = new Random();
+
+    public User(String name, String login, String email) {
+        this.id = String.valueOf(System.currentTimeMillis() + rn.nextInt());
+        this.name = name;
+        this.login = login;
+        this.email = email;
+        this.createDate = new Date();
+    }
 
     public User(String id, String name, String login, String email) {
         this.id = id;

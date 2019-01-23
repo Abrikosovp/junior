@@ -11,14 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Servlet works with user's store.
  * Presentation layout.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.2$
+ * @version 0.3$
  * @since 0.1
  * 18.01.2019
  */
@@ -27,10 +26,6 @@ public class UserServlet extends HttpServlet {
      * Validate class instance.
      */
     private final ValidateService validate = ValidateService.getInstance().init();
-    /**
-     * To generate a random id.
-     */
-    private final Random rn = new Random();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -56,14 +51,18 @@ public class UserServlet extends HttpServlet {
         Action.Type act = Action.Type.valueOf(action.toUpperCase());
 
         String id = request.getParameter("id");
-        if (id == null || id.equals("")) {
-            id = String.valueOf(System.currentTimeMillis() + rn.nextInt());
-        }
 
         String name = request.getParameter("name");
         String login = request.getParameter("login");
         String email = request.getParameter("email");
-        User user = new User(id, name, login, email);
+
+        User user;
+        if (id == null || id.equals("")) {
+            user = new User(name, login, email);
+        } else {
+            user = new User(id, name, login, email);
+        }
+
         String result = this.validate.doAction(act, user);
 
         request.setAttribute("result", result);

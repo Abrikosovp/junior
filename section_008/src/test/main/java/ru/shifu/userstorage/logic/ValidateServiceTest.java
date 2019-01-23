@@ -25,6 +25,8 @@ public class ValidateServiceTest {
         this.validate.doAction(actAdd, new User("1", "first", "first login", "first@mail.ru"));
         assertThat(this.validate.findAll().size(), is(1));
 
+        assertThat(this.validate.findById("1").getId(), is("1"));
+
         String action = "update";
         Action.Type act = Action.Type.valueOf(action.toUpperCase());
         this.validate.doAction(act, new User("1", "second", "first login", "first@mail.ru"));

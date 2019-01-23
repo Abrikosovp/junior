@@ -33,20 +33,13 @@ public class ValidateService {
      */
     private final Map<Action.Type, Function<User, String>> dispatch = new HashMap<>();
 
-    private static ValidateService instance;
+    private static final ValidateService INSTANCE = new ValidateService();
     /**
      * Only one instance of this class will be created.
      * @return instance of class.
      */
     public static ValidateService getInstance() {
-        if (instance == null) {
-            synchronized (ValidateService.class) {
-                if (instance == null) {
-                    instance = new ValidateService();
-                }
-            }
-        }
-        return instance;
+        return INSTANCE;
     }
     /**
      * Add new User to storage.
@@ -55,7 +48,7 @@ public class ValidateService {
     public Function<User, String> add() {
         return user -> {
             String result = "User already exists";
-            if (!store.add(user)) {
+            if (this.validUsers(user) && !store.add(user)) {
                 result = String.format("User with id: %s was added.", user.getId());
             }
             return result;
@@ -119,6 +112,17 @@ public class ValidateService {
         return this.dispatch.get(action).apply(user);
     }
 
+    private boolean validUsers(User user) {
+        boolean result = true;
+        List<User> list = this.findAll();
+        if (!list.isEmpty()) {
+            result = list.stream().allMatch(us -> user != null
+                    && !us.getEmail().equals(user.getEmail())
+                    && !us.getLogin().equals(user.getLogin()));
+        }
+        return result;
+    }
+
     /**
      * Find all users in storage.
      * @return list of all users.
@@ -126,7 +130,10 @@ public class ValidateService {
     public List<User> findAll() {
         return store.findAll();
     }
-
+    /**
+     * Find id user in storage.
+     * @return list of all users.
+     */
     public User findById(String id) {
         return this.store.findById(id);
     }
