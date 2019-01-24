@@ -7,7 +7,7 @@ import java.util.Random;
  * Simple model of data.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.2$
+ * @version 0.3$
  * @since 0.1
  * 18.01.2019
  */
@@ -39,6 +39,14 @@ public class User {
         this.createDate = new Date();
     }
 
+    public User(String id, String name, String login, String email, Date date) {
+        this.id = id;
+        this.name = name;
+        this.login = login;
+        this.email = email;
+        this.createDate = date;
+    }
+
     public String getId() {
         return id;
     }
@@ -56,7 +64,7 @@ public class User {
     }
 
     public Date getCreateDate() {
-        return createDate;
+        return  createDate;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package ru.shifu.userstorage.logic;
 
-import ru.shifu.userstorage.persistent.MemoryStore;
+import ru.shifu.userstorage.persistent.DbStore;
 import ru.shifu.userstorage.persistent.Store;
 import ru.shifu.userstorage.persistent.User;
 
@@ -15,7 +15,7 @@ import java.util.function.Function;
  * Based on Singleton pattern and Dispatch patter by Petr Arsentev (parsentev@uandex.ru).
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.1$
+ * @version 0.2$
  * @since 0.1
  * 18.01.2019
  */
@@ -26,7 +26,7 @@ public class ValidateService {
     /**
      * Instance of storage class.
      */
-    private final Store store = MemoryStore.getInstance();
+    private final Store store = DbStore.getInstance();
 
     /**
      * Actions storage.
@@ -45,10 +45,10 @@ public class ValidateService {
      * Add new User to storage.
      * @return message to logic layout.
      */
-    public Function<User, String> add() {
+    private Function<User, String> add() {
         return user -> {
             String result = "User already exists";
-            if (this.validUsers(user) && !store.add(user)) {
+            if (this.validUsers(user) && store.add(user)) {
                 result = String.format("User with id: %s was added.", user.getId());
             }
             return result;
@@ -59,7 +59,7 @@ public class ValidateService {
      * Removes user by id.
      * @return message to logic layout.
      */
-    public Function<User, String> delete() {
+    private Function<User, String> delete() {
         return user -> {
             String result = "User already exists";
             if (store.delete(user)) {
@@ -73,7 +73,7 @@ public class ValidateService {
      * Changes user if it exists.
      * @return message to logic layout.
      */
-    public Function<User, String> update() {
+    private Function<User, String> update() {
         return user -> {
             String result = "User already exists";
             if (store.update(user)) {
@@ -98,7 +98,7 @@ public class ValidateService {
      * @param type action key.
      * @param handle Handler.
      */
-    public void load(Action.Type type, Function<User, String> handle) {
+    private void load(Action.Type type, Function<User, String> handle) {
         this.dispatch.put(type, handle);
     }
 
@@ -118,7 +118,8 @@ public class ValidateService {
         if (!list.isEmpty()) {
             result = list.stream().allMatch(us -> user != null
                     && !us.getEmail().equals(user.getEmail())
-                    && !us.getLogin().equals(user.getLogin()));
+                    && !us.getLogin().equals(user.getLogin())
+                    && !us.getId().equals(user.getId()));
         }
         return result;
     }
