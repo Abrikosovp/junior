@@ -16,7 +16,7 @@
 
     <servlet>
         <servlet-name>UserServlet</servlet-name>
-        <servlet-class>ru.shifu.userstorage.presentation.UserServlet</servlet-class>
+        <servlet-class>ru.shifu.userstorage.presentation.UserController</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
@@ -33,7 +33,7 @@
 
     <servlet-mapping>
         <servlet-name>UsersServlet</servlet-name>
-        <url-pattern>/list</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
     <servlet>

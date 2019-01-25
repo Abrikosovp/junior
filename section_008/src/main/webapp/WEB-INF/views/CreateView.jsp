@@ -1,10 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>User creation</title>
 </head><body>
-<table><form method="POST" action="create">
+<table><form method="POST" action="${pageContext.servletContext.contextPath}/create">
 <input type="hidden" name="action" value="add">
 CREATE USER BY ID
 <tr><td>Name</td><td><input type="text" name="name"></td></tr>

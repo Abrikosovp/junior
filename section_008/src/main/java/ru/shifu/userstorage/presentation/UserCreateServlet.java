@@ -9,7 +9,7 @@ import java.io.IOException;
  * Servlet to create new users.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.3$
+ * @version 0.4$
  * @since 0.1
  * 21.01.2019
  */
@@ -17,11 +17,11 @@ public class UserCreateServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        request.getRequestDispatcher("create.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/CreateView.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        new UserServlet().doPost(request, response);
+        request.getRequestDispatcher("user").forward(request, response);
     }
 }

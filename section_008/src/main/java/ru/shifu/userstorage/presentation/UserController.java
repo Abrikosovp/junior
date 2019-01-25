@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -17,30 +16,15 @@ import java.util.List;
  * Presentation layout.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.3$
+ * @version 0.4$
  * @since 0.1
  * 18.01.2019
  */
-public class UserServlet extends HttpServlet {
+public class UserController extends HttpServlet {
     /**
      * Validate class instance.
      */
     private final ValidateService validate = ValidateService.getInstance().init();
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter writer = new PrintWriter(response.getOutputStream());
-        List<User> users = this.validate.findAll();
-        if (users.size() == 0) {
-            writer.append("Storage is empty.");
-        } else {
-            users.forEach(user -> writer.append(user.toString()));
-        }
-        writer.flush();
-    }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -66,6 +50,9 @@ public class UserServlet extends HttpServlet {
         String result = this.validate.doAction(act, user);
 
         request.setAttribute("result", result);
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        List<User> users = validate.findAll();
+        request.setAttribute("size", users.size());
+        request.setAttribute("users", users);
+        request.getRequestDispatcher("/WEB-INF/views/UserView.jsp").forward(request, response);
     }
 }
