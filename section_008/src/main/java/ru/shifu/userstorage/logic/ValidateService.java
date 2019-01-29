@@ -48,7 +48,7 @@ public class ValidateService {
     private Function<User, String> add() {
         return user -> {
             String result = "User already exists";
-            if (this.validUsers(user) && store.add(user)) {
+            if (user != null && store.validate(user) && store.add(user)) {
                 result = String.format("User with id: %s was added.", user.getId());
             }
             return result;
@@ -112,18 +112,6 @@ public class ValidateService {
         return this.dispatch.get(action).apply(user);
     }
 
-    private boolean validUsers(User user) {
-        boolean result = true;
-        List<User> list = this.findAll();
-        if (!list.isEmpty()) {
-            result = list.stream().allMatch(us -> user != null
-                    && !us.getEmail().equals(user.getEmail())
-                    && !us.getLogin().equals(user.getLogin())
-                    && !us.getId().equals(user.getId()));
-        }
-        return result;
-    }
-
     /**
      * Find all users in storage.
      * @return list of all users.
@@ -137,5 +125,23 @@ public class ValidateService {
      */
     public User findById(String id) {
         return this.store.findById(id);
+    }
+
+    /**
+     * The method checks if the user exists in the store.
+     * @param login to search.
+     * @param password to search.
+     * @return id if exists else -1;
+     */
+    public long isRegistered(String login, String password) {
+        long id = -1;
+        System.out.println(store.findAll());
+        for (User user : store.findAll()) {
+            if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
+                id = Long.parseLong(user.getId());
+                break;
+            }
+        }
+        return id;
     }
 }

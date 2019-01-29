@@ -10,8 +10,14 @@
 CREATE USER BY ID
 <tr><td>Name</td><td><input type="text" name="name"></td></tr>
 <tr><td>Login</td><td><input type="text" name="login"></td></tr>
+<tr><td>Password</td><td><input type="text" name="password"></td></tr>
 <tr><td>Email</td><td><input type="text" name="email"></td></tr>
+<tr><td>Role</td>
+<td><select name="role">
+<option value="admin">admin</option>
+<option selected value="user">user</option>
+</select></td></tr>
 <tr align="right"><td colspan="2">
-    <input type="submit" value="CREATE"></td></tr>
+<input type="submit" value="CREATE"></td></tr>
 </form></table>
 </body></html>

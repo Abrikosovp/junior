@@ -12,7 +12,7 @@ import java.util.List;
  * Class is based on the Singleton pattern.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.1$
+ * @version 0.2$
  * @since 0.1
  * 24.01.2019
  */
@@ -52,12 +52,14 @@ public class DbStore implements Store {
     public boolean add(User user) {
         Boolean result = false;
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("INSERT INTO users(id, name, login, email, created) values (?, ?, ?, ?, ?)")) {
+             PreparedStatement st = connection.prepareStatement("INSERT INTO users(id, name, login, password, role, email, created) values (?, ?, ?, ?, ?, ?, ?)")) {
             st.setString(1, user.getId());
             st.setString(2, user.getName());
             st.setString(3, user.getLogin());
-            st.setString(4, user.getEmail());
-            st.setDate(5, new Date(user.getCreateDate().getTime()));
+            st.setString(4, user.getPassword());
+            st.setString(5, user.getRole());
+            st.setString(6, user.getEmail());
+            st.setDate(7, new Date(user.getCreateDate().getTime()));
             st.executeUpdate();
             result = true;
         } catch (Exception e) {
@@ -75,11 +77,13 @@ public class DbStore implements Store {
     public boolean update(User user) {
         Boolean result = false;
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("UPDATE users SET name=?, login=?, email=? WHERE id=?")) {
+             PreparedStatement st = connection.prepareStatement("UPDATE users SET name=?, login=?, password=?, role=?, email=? WHERE id=?")) {
             st.setString(1, user.getName());
             st.setString(2, user.getLogin());
-            st.setString(3, user.getEmail());
-            st.setString(4, user.getId());
+            st.setString(3, user.getPassword());
+            st.setString(4, user.getRole());
+            st.setString(5, user.getEmail());
+            st.setString(6, user.getId());
             st.executeUpdate();
             result = true;
         } catch (Exception e) {
@@ -123,7 +127,9 @@ public class DbStore implements Store {
                 String login = rs.getString("login");
                 String email = rs.getString("email");
                 Date data = rs.getDate("created");
-                result.add(new User(id, name, login, email, data));
+                String password = rs.getString("password");
+                String role = rs.getString("role");
+                result.add(new User(id, name, login, password, role, email, data));
             }
         } catch (Exception e) {
 
@@ -148,12 +154,37 @@ public class DbStore implements Store {
             while (rs.next()) {
                 String name = rs.getString("name");
                 String login = rs.getString("login");
+                String password = rs.getString("password");
+                String role = rs.getString("role");
                 Date data = rs.getDate("created");
                 String email = rs.getString("email");
-                result = new User(id, name, login, email, data);
+                result = new User(id, name, login, password, role, email, data);
             }
         } catch (Exception e) {
             LOGGER.error("User find by id ERROR!", e);
+        }
+        return result;
+    }
+
+    /**
+     * Finds single user in the database.
+     * @param user to search.
+     * @return found user.
+     */
+    @Override
+    public boolean validate(User user) {
+        boolean result = true;
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement st = connection.prepareStatement("SELECT * FROM users WHERE id=? or login=? or email=?")) {
+            st.setString(1, user.getId());
+            st.setString(2, user.getLogin());
+            st.setString(3, user.getEmail());
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                result = false;
+            }
+        } catch (Exception e) {
+            LOGGER.error("User validate id , login, email ERROR!", e);
         }
         return result;
     }
@@ -165,13 +196,17 @@ public class DbStore implements Store {
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement(
                      "CREATE TABLE IF NOT EXISTS users ("
-                             + "id VARCHAR UNIQUE,"
+                             + "id VARCHAR primary key ,"
                              + "name VARCHAR(50),"
-                             + "login VARCHAR(50),"
+                             + "login VARCHAR(50) NOT NULL ,"
+                             + "password VARCHAR(50) NOT NULL ,"
+                             + "role VARCHAR(10),"
                              + "email VARCHAR(50),"
                              + "created DATE\n"
-                             + ");")
-        ) {
+                             + ");"
+                             + "DELETE FROM users where id='0';"
+                             + "INSERT INTO users(id, name,  login, password, role, created)"
+                             + " VALUES ('0', 'new', 'root', 'root', 'admin', current_date);")) {
 
             st.executeUpdate();
         } catch (SQLException e) {

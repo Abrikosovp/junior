@@ -58,4 +58,87 @@
         <url-pattern>/create</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>Signin Controller</servlet-name>
+        <servlet-class>ru.shifu.userstorage.presentation.SigninInController</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Signin Controller</servlet-name>
+        <url-pattern>/signin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SigninOutController</servlet-name>
+        <servlet-class>ru.shifu.userstorage.presentation.SigninOutController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SigninOutController</servlet-name>
+        <url-pattern>/signout</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>Auth Filter</filter-name>
+        <filter-class>ru.shifu.userstorage.presentation.AuthFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>Auth Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>FirstServlet</servlet-name>
+        <servlet-class>ru.shifu.userstorage.presentation.session.FirstServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>FirstServlet</servlet-name>
+        <url-pattern>/first</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>FirstBasketServlet</servlet-name>
+        <servlet-class>ru.shifu.userstorage.presentation.session.BasketServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>FirstBasketServlet</servlet-name>
+        <url-pattern>/basket</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SetCookiesServlet</servlet-name>
+        <servlet-class>ru.shifu.userstorage.presentation.cookies.SetCookiesServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SetCookiesServlet</servlet-name>
+        <url-pattern>/set-cookies</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetCookiesServlet</servlet-name>
+        <servlet-class>ru.shifu.userstorage.presentation.cookies.GetCookiesServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetCookiesServlet</servlet-name>
+        <url-pattern>/get-cookies</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteCookiesServlet</servlet-name>
+        <servlet-class>ru.shifu.userstorage.presentation.cookies.DeleteCookiesServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DeleteCookiesServlet</servlet-name>
+        <url-pattern>/delete-cookies</url-pattern>
+    </servlet-mapping>
+
 </web-app>

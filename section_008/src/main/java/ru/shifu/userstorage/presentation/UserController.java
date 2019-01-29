@@ -16,7 +16,7 @@ import java.util.List;
  * Presentation layout.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.4$
+ * @version 0.5$
  * @since 0.1
  * 18.01.2019
  */
@@ -38,13 +38,15 @@ public class UserController extends HttpServlet {
 
         String name = request.getParameter("name");
         String login = request.getParameter("login");
+        String password = request.getParameter("password");
+        String role = request.getParameter("role");
         String email = request.getParameter("email");
 
         User user;
         if (id == null || id.equals("")) {
-            user = new User(name, login, email);
+            user = new User(name, login, password, role, email);
         } else {
-            user = new User(id, name, login, email);
+            user = new User(id, name, login, password, role, email);
         }
 
         String result = this.validate.doAction(act, user);

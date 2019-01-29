@@ -7,7 +7,7 @@ import java.util.List;
  * Persistent layout.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.1$
+ * @version 0.2$
  * @since 0.1
  * 18.01.2019
  */
@@ -22,4 +22,6 @@ public interface Store {
     List<User> findAll();
 
     User findById(String id);
+
+    boolean validate(User user);
 }

@@ -2,6 +2,7 @@ package ru.shifu.userstorage.persistent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 /**
  * The class implements the user storage in RAM.
@@ -9,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Persistent layout.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.1$
+ * @version 0.2$
  * @since 0.1
  * 18.01.2019
  */
@@ -85,6 +86,25 @@ public class MemoryStore implements Store {
         return store.get(id);
     }
 
+    /**
+     * validate user
+     * @param user of user to be validate
+     * @return true and false
+     */
+    @Override
+    public boolean validate(User user) {
+        boolean result = true;
+        for (Map.Entry<String, User> entry : store.entrySet()) {
+            if (entry.getValue().getLogin().equals(user.getLogin())) {
+                result = false;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Clear
+     */
     public void deleteAll() {
         store.clear();
     }
