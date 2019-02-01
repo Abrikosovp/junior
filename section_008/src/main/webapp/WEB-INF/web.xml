@@ -90,55 +90,11 @@
     </filter-mapping>
 
     <servlet>
-        <servlet-name>FirstServlet</servlet-name>
-        <servlet-class>ru.shifu.userstorage.presentation.session.FirstServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <servlet-name>GuestServlet</servlet-name>
+        <servlet-class>ru.shifu.userstorage.presentation.GuestServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>FirstServlet</servlet-name>
-        <url-pattern>/first</url-pattern>
+        <servlet-name>GuestServlet</servlet-name>
+        <url-pattern>/guest</url-pattern>
     </servlet-mapping>
-
-    <servlet>
-        <servlet-name>FirstBasketServlet</servlet-name>
-        <servlet-class>ru.shifu.userstorage.presentation.session.BasketServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>FirstBasketServlet</servlet-name>
-        <url-pattern>/basket</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>SetCookiesServlet</servlet-name>
-        <servlet-class>ru.shifu.userstorage.presentation.cookies.SetCookiesServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>SetCookiesServlet</servlet-name>
-        <url-pattern>/set-cookies</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>GetCookiesServlet</servlet-name>
-        <servlet-class>ru.shifu.userstorage.presentation.cookies.GetCookiesServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>GetCookiesServlet</servlet-name>
-        <url-pattern>/get-cookies</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>DeleteCookiesServlet</servlet-name>
-        <servlet-class>ru.shifu.userstorage.presentation.cookies.DeleteCookiesServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>DeleteCookiesServlet</servlet-name>
-        <url-pattern>/delete-cookies</url-pattern>
-    </servlet-mapping>
-
 </web-app>

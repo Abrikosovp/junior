@@ -2,7 +2,7 @@ package ru.shifu.userstorage.logic;
 
 import ru.shifu.userstorage.persistent.DbStore;
 import ru.shifu.userstorage.persistent.Store;
-import ru.shifu.userstorage.persistent.User;
+import ru.shifu.userstorage.models.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.function.Function;
  * Based on Singleton pattern and Dispatch patter by Petr Arsentev (parsentev@uandex.ru).
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.2$
+ * @version 0.3$
  * @since 0.1
  * 18.01.2019
  */
@@ -48,7 +48,7 @@ public class ValidateService {
     private Function<User, String> add() {
         return user -> {
             String result = "User already exists";
-            if (user != null && store.validate(user) && store.add(user)) {
+            if (user != null && this.store.validate(user) && this.store.add(user)) {
                 result = String.format("User with id: %s was added.", user.getId());
             }
             return result;
@@ -62,7 +62,7 @@ public class ValidateService {
     private Function<User, String> delete() {
         return user -> {
             String result = "User already exists";
-            if (store.delete(user)) {
+            if (this.store.delete(user)) {
                 result = String.format("User with id: %s was delete.", user.getId());
             }
             return result;
@@ -76,7 +76,7 @@ public class ValidateService {
     private Function<User, String> update() {
         return user -> {
             String result = "User already exists";
-            if (store.update(user)) {
+            if (this.store.update(user)) {
                 result = String.format("User with id: %s was update.", user.getId());
             }
             return result;
@@ -117,7 +117,7 @@ public class ValidateService {
      * @return list of all users.
      */
     public List<User> findAll() {
-        return store.findAll();
+        return this.store.findAll();
     }
     /**
      * Find id user in storage.
@@ -135,13 +135,21 @@ public class ValidateService {
      */
     public long isRegistered(String login, String password) {
         long id = -1;
-        System.out.println(store.findAll());
-        for (User user : store.findAll()) {
+        for (User user : this.store.findAll()) {
             if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
                 id = Long.parseLong(user.getId());
                 break;
             }
         }
         return id;
+    }
+
+    /**
+     * Delete user from database.
+     *
+     * @return true, if deleted.
+     */
+    public boolean fullDelete() {
+        return this.store.fullDelete();
     }
 }

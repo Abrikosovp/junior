@@ -4,7 +4,7 @@
 <head>
     <title>Title</title>
 </head>
-<body>
+<body style="background-color: #FAEBD7">
 
 <c:if test="${error != ''}">
     <div style="background-color: red">
@@ -15,10 +15,12 @@
 <form action="${pageContext.servletContext.contextPath}/signin" method="post">
     <table>
         <tr>
-            <td>Login: </td><td><input type="text" name="login"></td>
+            <td>Login:</td>
+            <td><input type="text" name="login"></td>
         </tr>
         <tr>
-            <td>Password: </td><td>  <input type="password" name="password" ></td>
+            <td>Password:</td>
+            <td><input type="password" name="password"></td>
         </tr>
     </table>
 

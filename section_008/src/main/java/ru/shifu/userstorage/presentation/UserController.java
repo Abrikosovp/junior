@@ -2,12 +2,14 @@ package ru.shifu.userstorage.presentation;
 
 import ru.shifu.userstorage.logic.Action;
 import ru.shifu.userstorage.logic.ValidateService;
-import ru.shifu.userstorage.persistent.User;
+import ru.shifu.userstorage.models.Role;
+import ru.shifu.userstorage.models.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -16,7 +18,7 @@ import java.util.List;
  * Presentation layout.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.5$
+ * @version 0.6$
  * @since 0.1
  * 18.01.2019
  */
@@ -39,7 +41,7 @@ public class UserController extends HttpServlet {
         String name = request.getParameter("name");
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        String role = request.getParameter("role");
+        Role role = Role.valueOf(request.getParameter("role"));
         String email = request.getParameter("email");
 
         User user;
@@ -53,8 +55,12 @@ public class UserController extends HttpServlet {
 
         request.setAttribute("result", result);
         List<User> users = validate.findAll();
-        request.setAttribute("size", users.size());
         request.setAttribute("users", users);
-        request.getRequestDispatcher("/WEB-INF/views/UserView.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        if (session.getAttribute("login") == null) {
+            request.getRequestDispatcher("/WEB-INF/views/Enter.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/WEB-INF/views/UserView.jsp").forward(request, response);
+        }
     }
 }

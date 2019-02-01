@@ -14,9 +14,9 @@ import java.io.IOException;
  * 30.01.2019
  */
 public class SigninOutController extends HttpServlet {
-
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getSession().invalidate();
-        response.sendRedirect(String.format("%s/signin", request.getContextPath()));
+        response.sendRedirect(String.format("%s/guest", request.getContextPath()));
     }
 }

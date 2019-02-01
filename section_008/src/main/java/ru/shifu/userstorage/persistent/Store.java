@@ -1,7 +1,10 @@
 package ru.shifu.userstorage.persistent;
 
 
+import ru.shifu.userstorage.models.User;
+
 import java.util.List;
+
 /**
  * Storage of users interface.
  * Persistent layout.
@@ -24,4 +27,6 @@ public interface Store {
     User findById(String id);
 
     boolean validate(User user);
+
+    boolean fullDelete();
 }

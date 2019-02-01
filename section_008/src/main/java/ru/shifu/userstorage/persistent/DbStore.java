@@ -3,20 +3,25 @@ package ru.shifu.userstorage.persistent;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.shifu.userstorage.models.Role;
+import ru.shifu.userstorage.models.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * The class implements the user storage in DateBase.
  * Class is based on the Singleton pattern.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.2$
+ * @version 0.3$
  * @since 0.1
  * 24.01.2019
  */
 public class DbStore implements Store {
+
+    private static final Config CONF = Config.getInstance();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DbStore.class);
 
@@ -26,9 +31,9 @@ public class DbStore implements Store {
 
     public DbStore() {
         SOURCE.setDriverClassName("org.postgresql.Driver");
-        SOURCE.setUrl("jdbc:postgresql://localhost:5432/user_store");
-        SOURCE.setUsername("postgres");
-        SOURCE.setPassword("postgres");
+        SOURCE.setUrl(CONF.getValue("get.url"));
+        SOURCE.setUsername(CONF.getValue("get.name"));
+        SOURCE.setPassword(CONF.getValue("get.password"));
         SOURCE.setMinIdle(5);
         SOURCE.setMaxIdle(10);
         SOURCE.setMaxOpenPreparedStatements(100);
@@ -37,6 +42,7 @@ public class DbStore implements Store {
 
     /**
      * Returns instance.
+     *
      * @return instance of the class.
      */
     public static DbStore getInstance() {
@@ -45,6 +51,7 @@ public class DbStore implements Store {
 
     /**
      * Adds user to the database.
+     *
      * @param user to be added.
      * @return true, if added.
      */
@@ -52,24 +59,25 @@ public class DbStore implements Store {
     public boolean add(User user) {
         Boolean result = false;
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("INSERT INTO users(id, name, login, password, role, email, created) values (?, ?, ?, ?, ?, ?, ?)")) {
+             PreparedStatement st = connection.prepareStatement(CONF.getValue("get.add"))) {
             st.setString(1, user.getId());
             st.setString(2, user.getName());
             st.setString(3, user.getLogin());
             st.setString(4, user.getPassword());
-            st.setString(5, user.getRole());
+            st.setString(5, user.getRole().name());
             st.setString(6, user.getEmail());
             st.setDate(7, new Date(user.getCreateDate().getTime()));
             st.executeUpdate();
             result = true;
         } catch (Exception e) {
-           LOGGER.error("User ADD ERROR!", e);
+            LOGGER.error("User ADD ERROR!", e);
         }
         return result;
     }
 
     /**
      * Updates existed user.
+     *
      * @param user to be updated.
      * @return true if updated.
      */
@@ -77,11 +85,11 @@ public class DbStore implements Store {
     public boolean update(User user) {
         Boolean result = false;
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("UPDATE users SET name=?, login=?, password=?, role=?, email=? WHERE id=?")) {
+             PreparedStatement st = connection.prepareStatement(CONF.getValue("get.update"))) {
             st.setString(1, user.getName());
             st.setString(2, user.getLogin());
             st.setString(3, user.getPassword());
-            st.setString(4, user.getRole());
+            st.setString(4, user.getRole().name());
             st.setString(5, user.getEmail());
             st.setString(6, user.getId());
             st.executeUpdate();
@@ -94,6 +102,7 @@ public class DbStore implements Store {
 
     /**
      * Delete user from database by id.
+     *
      * @param user to be deleted.
      * @return true, if deleted.
      */
@@ -101,7 +110,7 @@ public class DbStore implements Store {
     public boolean delete(User user) {
         Boolean result = false;
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("DELETE FROM users WHERE id=?")) {
+             PreparedStatement st = connection.prepareStatement(CONF.getValue("get.delete"))) {
             st.setString(1, user.getId());
             st.executeUpdate();
             result = true;
@@ -117,19 +126,12 @@ public class DbStore implements Store {
      */
     @Override
     public List<User> findAll() {
-       List<User> result = new ArrayList<>();
+        List<User> result = new ArrayList<>();
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("SELECT * FROM users")) {
+             PreparedStatement st = connection.prepareStatement(CONF.getValue("get.findAll"))) {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                String id = rs.getString("id");
-                String name = rs.getString("name");
-                String login = rs.getString("login");
-                String email = rs.getString("email");
-                Date data = rs.getDate("created");
-                String password = rs.getString("password");
-                String role = rs.getString("role");
-                result.add(new User(id, name, login, password, role, email, data));
+                result.add(createUser(rs));
             }
         } catch (Exception e) {
 
@@ -147,18 +149,12 @@ public class DbStore implements Store {
     public User findById(String id) {
         User result = null;
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("SELECT * FROM users WHERE id=?")) {
+             PreparedStatement st = connection.prepareStatement(CONF.getValue("get.findById"))) {
             st.setString(1, id);
 
-             ResultSet rs = st.executeQuery();
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                String name = rs.getString("name");
-                String login = rs.getString("login");
-                String password = rs.getString("password");
-                String role = rs.getString("role");
-                Date data = rs.getDate("created");
-                String email = rs.getString("email");
-                result = new User(id, name, login, password, role, email, data);
+                result = createUser(rs);
             }
         } catch (Exception e) {
             LOGGER.error("User find by id ERROR!", e);
@@ -175,7 +171,7 @@ public class DbStore implements Store {
     public boolean validate(User user) {
         boolean result = true;
         try (Connection connection = SOURCE.getConnection();
-             PreparedStatement st = connection.prepareStatement("SELECT * FROM users WHERE id=? or login=? or email=?")) {
+             PreparedStatement st = connection.prepareStatement(CONF.getValue("get.valid"))) {
             st.setString(1, user.getId());
             st.setString(2, user.getLogin());
             st.setString(3, user.getEmail());
@@ -190,23 +186,48 @@ public class DbStore implements Store {
     }
 
     /**
+     * Delete user from database.
+     *
+     * @return true, if deleted.
+     */
+    @Override
+    public boolean fullDelete() {
+        Boolean result = false;
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement st = connection.prepareStatement(CONF.getValue("get.fullDelete"))) {
+            st.executeUpdate();
+            result = true;
+        } catch (Exception e) {
+            LOGGER.error("User full delete ERROR!", e);
+        }
+        return result;
+    }
+
+    /**
+     * Create user.
+     *
+     * @param rs resultSet from statement.
+     * @return item.
+     * @throws SQLException If an error occurs.
+     */
+    private User createUser(ResultSet rs) throws SQLException {
+        String id = rs.getString("id");
+        String name = rs.getString("name");
+        String login = rs.getString("login");
+        String email = rs.getString("email");
+        Date data = rs.getDate("created");
+        String password = rs.getString("password");
+        Role role = Role.valueOf(rs.getString("role"));
+        return new User(id, name, login, password, role, email, data);
+    }
+
+    /**
      * Prepares structure of the table at first start.
      */
     private void prepareStructure() {
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement(
-                     "CREATE TABLE IF NOT EXISTS users ("
-                             + "id VARCHAR primary key ,"
-                             + "name VARCHAR(50),"
-                             + "login VARCHAR(50) NOT NULL ,"
-                             + "password VARCHAR(50) NOT NULL ,"
-                             + "role VARCHAR(10),"
-                             + "email VARCHAR(50),"
-                             + "created DATE\n"
-                             + ");"
-                             + "DELETE FROM users where id='0';"
-                             + "INSERT INTO users(id, name,  login, password, role, created)"
-                             + " VALUES ('0', 'new', 'root', 'root', 'admin', current_date);")) {
+                     CONF.getValue("get.crTable"))) {
 
             st.executeUpdate();
         } catch (SQLException e) {

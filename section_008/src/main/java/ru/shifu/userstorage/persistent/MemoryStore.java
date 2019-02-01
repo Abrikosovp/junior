@@ -1,9 +1,12 @@
 package ru.shifu.userstorage.persistent;
 
+import ru.shifu.userstorage.models.User;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * The class implements the user storage in RAM.
  * Class is based on the Singleton pattern.
@@ -16,7 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MemoryStore implements Store {
 
-    private MemoryStore() { }
+    private MemoryStore() {
+    }
 
     private static MemoryStore instance;
     /**
@@ -103,9 +107,12 @@ public class MemoryStore implements Store {
     }
 
     /**
-     * Clear
+     * Delete for all users
+     * @return
      */
-    public void deleteAll() {
+    @Override
+    public boolean fullDelete() {
         store.clear();
+        return true;
     }
 }

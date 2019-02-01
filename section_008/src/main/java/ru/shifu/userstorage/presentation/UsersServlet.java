@@ -2,7 +2,8 @@ package ru.shifu.userstorage.presentation;
 
 
 import ru.shifu.userstorage.logic.ValidateService;
-import ru.shifu.userstorage.persistent.User;
+import ru.shifu.userstorage.models.Role;
+import ru.shifu.userstorage.models.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,14 +28,13 @@ public class UsersServlet extends HttpServlet {
         HttpSession session = request.getSession();
         List<User> users = ValidateService.getInstance().findAll();
 
-        String role = null;
+        Role role = null;
         for (User user: users) {
             if (Long.parseLong(user.getId()) == Long.parseLong(session.getAttribute("uid").toString())) {
                 role = user.getRole();
             }
         }
         session.setAttribute("role", role);
-        request.setAttribute("size", users.size());
         request.setAttribute("users", users);
         request.getRequestDispatcher("/WEB-INF/views/UserView.jsp").forward(request, response);
 

@@ -1,4 +1,4 @@
-package ru.shifu.userstorage.persistent;
+package ru.shifu.userstorage.models;
 
 import java.util.Date;
 import java.util.Random;
@@ -7,7 +7,7 @@ import java.util.Random;
  * Simple model of data.
  *
  * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.4$
+ * @version 0.5$
  * @since 0.1
  * 18.01.2019
  */
@@ -16,7 +16,7 @@ public class User {
     private String name;
     private String login;
     private String password;
-    private String role;
+    private Role role;
     private String email;
     private Date createDate;
 
@@ -25,7 +25,7 @@ public class User {
      */
     private final Random rn = new Random();
 
-    public User(String name, String login, String password, String role, String email) {
+    public User(String name, String login, String password, Role role, String email) {
         this.id = String.valueOf(System.currentTimeMillis() + rn.nextInt());
         this.name = name;
         this.login = login;
@@ -35,7 +35,7 @@ public class User {
         this.createDate = new Date();
     }
 
-    public User(String id, String name, String login, String password, String role, String email) {
+    public User(String id, String name, String login, String password, Role role, String email) {
         this.id = id;
         this.name = name;
         this.login = login;
@@ -45,7 +45,7 @@ public class User {
         this.createDate = new Date();
     }
 
-    public User(String id, String name, String login, String password, String role, String email, Date date) {
+    public User(String id, String name, String login, String password, Role role, String email, Date date) {
         this.id = id;
         this.name = name;
         this.login = login;
@@ -59,7 +59,7 @@ public class User {
         return password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
@@ -80,7 +80,11 @@ public class User {
     }
 
     public Date getCreateDate() {
-        return  createDate;
+        return createDate;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
