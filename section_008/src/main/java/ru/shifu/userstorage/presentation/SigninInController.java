@@ -1,5 +1,6 @@
 package ru.shifu.userstorage.presentation;
 
+import ru.shifu.userstorage.logic.Validate;
 import ru.shifu.userstorage.logic.ValidateService;
 
 import javax.servlet.ServletException;
@@ -18,7 +19,7 @@ import java.io.IOException;
  * 30.01.2019
  */
 public class SigninInController extends HttpServlet {
-    private final ValidateService validate = ValidateService.getInstance();
+    private final Validate validate = ValidateService.getInstance();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("login");

@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThat;
  */
 
 public class ValidateServiceTest {
-    private ValidateService validate = ValidateService.getInstance().init();
+    private Validate validate = ValidateService.getInstance();
 
     @Before
     public void beforeTest() {

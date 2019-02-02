@@ -1,6 +1,7 @@
 package ru.shifu.userstorage.presentation;
 
 import ru.shifu.userstorage.logic.Action;
+import ru.shifu.userstorage.logic.Validate;
 import ru.shifu.userstorage.logic.ValidateService;
 import ru.shifu.userstorage.models.Role;
 import ru.shifu.userstorage.models.User;
@@ -26,7 +27,7 @@ public class UserController extends HttpServlet {
     /**
      * Validate class instance.
      */
-    private final ValidateService validate = ValidateService.getInstance().init();
+    private final Validate validate = ValidateService.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

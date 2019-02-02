@@ -1,54 +1,44 @@
 package ru.shifu.userstorage.logic;
 
-import ru.shifu.userstorage.persistent.DbStore;
-import ru.shifu.userstorage.persistent.Store;
+import ru.shifu.userstorage.models.Role;
 import ru.shifu.userstorage.models.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-/**
- * Class for data validates.
- * Logic layout.
- * Checks data for compliance with conditions.
- * Based on Singleton pattern and Dispatch patter by Petr Arsentev (parsentev@uandex.ru).
- *
- * @author Pavel Abrikosov (abrikosovp@mail.ru)
- * @version 0.3$
- * @since 0.1
- * 18.01.2019
- */
-public class ValidateService implements Validate {
 
-    public ValidateService() {
-    }
+public class ValidateStub implements Validate  {
+
+    public ValidateStub() { }
 
     /**
      * Instance of storage class.
      */
-    private final Store store = DbStore.getInstance();
+    private final Map<String, User> store = new HashMap<>();
 
     /**
      * Actions storage.
      */
     private final Map<Action.Type, Function<User, String>> dispatch = new HashMap<>();
 
+    private static ValidateStub instance;
     /**
-     * On demand holder.
-     */
-    public static class ValidateStubHolder {
-        public static final ValidateService HOLDER_INSTANCE = new ValidateService().init();
-    }
-
-    /**
-     * This method returns a single instance of the class.
+     * Only one instance of this class will be created.
      * @return instance of class.
      */
     public static Validate getInstance() {
-        return ValidateStubHolder.HOLDER_INSTANCE;
-    }
+        if (instance == null) {
+            synchronized (ValidateService.class) {
+                if (instance == null) {
+                    instance = new ValidateStub().init();
 
+                }
+            }
+        }
+        return instance;
+    }
     /**
      * Add new User to storage.
      * @return message to logic layout.
@@ -56,7 +46,7 @@ public class ValidateService implements Validate {
     private Function<User, String> add() {
         return user -> {
             String result = "User already exists";
-            if (user != null && this.store.validate(user) && this.store.add(user)) {
+            if (this.store.put(user.getId(), user) == null) {
                 result = String.format("User with id: %s was added.", user.getId());
             }
             return result;
@@ -70,7 +60,7 @@ public class ValidateService implements Validate {
     private Function<User, String> delete() {
         return user -> {
             String result = "User already exists";
-            if (this.store.delete(user)) {
+            if (this.store.remove(user.getId()) != null) {
                 result = String.format("User with id: %s was delete.", user.getId());
             }
             return result;
@@ -84,7 +74,7 @@ public class ValidateService implements Validate {
     private Function<User, String> update() {
         return user -> {
             String result = "User already exists";
-            if (this.store.update(user)) {
+            if (this.store.replace(user.getId(), user) != null) {
                 result = String.format("User with id: %s was update.", user.getId());
             }
             return result;
@@ -95,10 +85,11 @@ public class ValidateService implements Validate {
      * Init dispatcher.
      * @return current object.
      */
-    private ValidateService init() {
+    public ValidateStub init() {
         this.load(Action.Type.ADD, this.add());
-        this.load(Action.Type.UPDATE, this.update());
         this.load(Action.Type.DELETE, this.delete());
+        this.load(Action.Type.UPDATE, this.update());
+        doAction(Action.Type.ADD, new User("1", "name", "root", "root", Role.ADMIN, "admin"));
         return this;
     }
     /**
@@ -125,14 +116,16 @@ public class ValidateService implements Validate {
      * @return list of all users.
      */
     public List<User> findAll() {
-        return this.store.findAll();
+        List<User> result = new ArrayList<>();
+        result.addAll(store.values());
+        return result;
     }
     /**
      * Find id user in storage.
      * @return list of all users.
      */
     public User findById(String id) {
-        return this.store.findById(id);
+        return store.get(String.valueOf(id));
     }
 
     /**
@@ -143,7 +136,7 @@ public class ValidateService implements Validate {
      */
     public long isRegistered(String login, String password) {
         long id = -1;
-        for (User user : this.store.findAll()) {
+        for (User user : this.findAll()) {
             if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
                 id = Long.parseLong(user.getId());
                 break;
@@ -152,12 +145,13 @@ public class ValidateService implements Validate {
         return id;
     }
 
-    /**
-     * Delete user from database.
-     *
-     * @return true, if deleted.
-     */
+    @Override
     public boolean fullDelete() {
-        return this.store.fullDelete();
+        boolean result = false;
+        if (!this.store.isEmpty()) {
+            this.store.clear();
+            result = true;
+        }
+        return result;
     }
 }

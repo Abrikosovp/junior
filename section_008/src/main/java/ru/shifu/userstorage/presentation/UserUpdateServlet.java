@@ -29,6 +29,6 @@ public class UserUpdateServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        new UserController().doPost(request, response);
+        request.getRequestDispatcher("user").forward(request, response);
     }
 }
