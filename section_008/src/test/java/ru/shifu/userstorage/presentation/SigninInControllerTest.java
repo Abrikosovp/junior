@@ -36,7 +36,7 @@ public class SigninInControllerTest {
     private HttpServletRequest request;
     private HttpServletResponse response;
     private RequestDispatcher dispatcher;
-    private final static String path = "/WEB-INF/views/LoginView.jsp";
+    private final static String PATH = "/WEB-INF/views/LoginView.jsp";
 
     @Before
     public void createMocks() {
@@ -47,14 +47,14 @@ public class SigninInControllerTest {
         this.request = mock(HttpServletRequest.class);
         this.response = mock(HttpServletResponse.class);
         this.dispatcher = mock(RequestDispatcher.class);
-        when(this.request.getRequestDispatcher(this.path)).thenReturn(this.dispatcher);
+        when(this.request.getRequestDispatcher(this.PATH)).thenReturn(this.dispatcher);
     }
 
 
     @Test
     public void whenDoGetThenForwardToView() throws ServletException, IOException {
         new SigninInController().doGet(this.request, this.response);
-        verify(this.request, times(1)).getRequestDispatcher(this.path);
+        verify(this.request, times(1)).getRequestDispatcher(this.PATH);
         verify(this.request, never()).getSession();
         verify(this.dispatcher).forward(this.request, this.response);
     }
@@ -64,7 +64,7 @@ public class SigninInControllerTest {
         when(this.request.getParameter("login")).thenReturn("not existed");
         when(this.request.getParameter("password")).thenReturn("not existed");
         new SigninInController().doPost(this.request, this.response);
-        verify(this.request, times(1)).getRequestDispatcher(this.path);
+        verify(this.request, times(1)).getRequestDispatcher(this.PATH);
         verify(this.dispatcher).forward(this.request, this.response);
         assertNull(this.request.getSession(false));
     }

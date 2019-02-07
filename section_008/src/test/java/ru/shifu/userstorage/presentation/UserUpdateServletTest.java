@@ -46,6 +46,7 @@ public class UserUpdateServletTest {
     @Test
     public void whenUpdateUserAndSendToGetUserController() throws ServletException, IOException {
         when(this.request.getRequestDispatcher("/WEB-INF/views/UpdateView.jsp")).thenReturn(this.dispatcher);
+        when(this.request.getParameter("id")).thenReturn("1");
         this.servlet.doGet(this.request, this.response);
         verify(this.dispatcher).forward(this.request, this.response);
     }

@@ -29,11 +29,11 @@ public class MemoryStoreTest {
     public void before() {
         this.findBy = new User("1", "updated first", "updated first login", "pass", Role.ADMIN, "ufirst@mail.ru");
         this.user1 = new User("1", "first", "first login", "pass", Role.ADMIN, "first@mail.ru");
-        this.user2 =new User("2", "second", "second login", "pass", Role.ADMIN, "second@mail.ru");
+        this.user2 = new User("2", "second", "second login", "pass", Role.ADMIN, "second@mail.ru");
         this.user3 = new User("2", "second", "second login", "pass", Role.ADMIN, "second@mail.ru");
-        this.store.add( this.user1);
-        this.store.add( this.user2);
-        this.store.add( this.user3);
+        this.store.add(this.user1);
+        this.store.add(this.user2);
+        this.store.add(this.user3);
     }
 
     @After

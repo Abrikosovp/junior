@@ -22,7 +22,7 @@ public class MemoryStore implements Store {
     private MemoryStore() {
     }
 
-    private static MemoryStore instance;
+    private static final MemoryStore INSTANCE = new MemoryStore();
     /**
      * Users storage.
      * The user id is used as a key for the map.
@@ -33,14 +33,7 @@ public class MemoryStore implements Store {
      * @return instance of class.
      */
     public static MemoryStore getInstance() {
-        if (instance == null) {
-            synchronized (MemoryStore.class) {
-                if (instance == null) {
-                    instance = new MemoryStore();
-                }
-            }
-        }
-        return instance;
+        return INSTANCE;
     }
 
     /**

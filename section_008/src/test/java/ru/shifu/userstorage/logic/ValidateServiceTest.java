@@ -26,7 +26,7 @@ public class ValidateServiceTest {
     public void beforeTest() {
         this.validate.fullDelete();
         Action.Type add = Action.Type.valueOf("ADD");
-        this.validate.doAction(add, new User("1","123", "Katy", "ewLogin", Role.ADMIN, "NewEmail"));
+        this.validate.doAction(add, new User("123", "Katy", "ewLogin", Role.ADMIN, "NewEmail"));
     }
 
     @After
@@ -36,30 +36,27 @@ public class ValidateServiceTest {
 
     @Test
     public void whenAddUsersThenReturnResult() {
-        this.validate.findById("1");
-        assertThat(this.validate.findById("1").getName(), is("123"));
-
+        assertThat(this.validate.findAll().size(), is(1));
     }
 
     @Test
     public void whenUpdateUsersThenReturnResult() {
         Action.Type update = Action.Type.valueOf("UPDATE");
-        this.validate.doAction(update, new User("1","1", "Fre", "Login", Role.USER, "Email"));
-        this.validate.findById("1");
-        assertThat(this.validate.findById("1").getName(), is("1"));
+        this.validate.doAction(update, new User(this.getId(), "name", "Fre", "Login", Role.USER, "Email"));
+        assertThat(this.validate.findAll().get(0).getName(), is("name"));
     }
 
     @Test
     public void whenDeleteUsersThenReturnResult() {
         Action.Type update = Action.Type.valueOf("DELETE");
-        this.validate.doAction(update, new User("1","1", "Fre", "Login", Role.USER, "Email"));
-        assertThat(this.validate.findAll().size(), is(0));
+        this.validate.doAction(update, new User(this.getId(), "name", "Fre", "Login", Role.USER, "Email"));
+        assertThat(this.size(), is(0));
     }
 
     @Test
     public void whenIsRegisteredUsersThenReturnResult() {
         long result = this.validate.isRegistered("Katy", "ewLogin");
-        assertThat(1L, is(result));
+        assertThat(this.getId(), is(String.valueOf(result)));
         long res = this.validate.isRegistered("Kat", "Login");
         assertThat(-1L, is(res));
     }
@@ -68,6 +65,14 @@ public class ValidateServiceTest {
     public void whenAddIDGenerateUsersThenReturnResult() {
         Action.Type add = Action.Type.valueOf("ADD");
         this.validate.doAction(add, new User("1", "Kat", "Login", Role.USER, "Email"));
-        assertThat(this.validate.findAll().size(), is(2));
+        assertThat(this.size(), is(2));
+    }
+
+    private String getId() {
+        return this.validate.findAll().get(0).getId();
+    }
+
+    private int size() {
+        return this.validate.findAll().size();
     }
 }

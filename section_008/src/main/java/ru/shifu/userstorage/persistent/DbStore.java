@@ -60,13 +60,12 @@ public class DbStore implements Store {
         Boolean result = false;
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement(CONF.getValue("get.add"))) {
-            st.setString(1, user.getId());
-            st.setString(2, user.getName());
-            st.setString(3, user.getLogin());
-            st.setString(4, user.getPassword());
-            st.setString(5, user.getRole().name());
-            st.setString(6, user.getEmail());
-            st.setDate(7, new Date(user.getCreateDate().getTime()));
+            st.setString(1, user.getName());
+            st.setString(3, user.getPassword());
+            st.setString(2, user.getLogin());
+            st.setString(4, user.getRole().name());
+            st.setString(5, user.getEmail());
+            st.setDate(6, new Date(user.getCreateDate().getTime()));
             st.executeUpdate();
             result = true;
         } catch (Exception e) {
@@ -91,7 +90,7 @@ public class DbStore implements Store {
             st.setString(3, user.getPassword());
             st.setString(4, user.getRole().name());
             st.setString(5, user.getEmail());
-            st.setString(6, user.getId());
+            st.setLong(6, Long.parseLong(user.getId()));
             st.executeUpdate();
             result = true;
         } catch (Exception e) {
@@ -111,7 +110,7 @@ public class DbStore implements Store {
         Boolean result = false;
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement(CONF.getValue("get.delete"))) {
-            st.setString(1, user.getId());
+            st.setLong(1, Long.parseLong(user.getId()));
             st.executeUpdate();
             result = true;
         } catch (Exception e) {
@@ -150,7 +149,7 @@ public class DbStore implements Store {
         User result = null;
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement(CONF.getValue("get.findById"))) {
-            st.setString(1, id);
+            st.setLong(1, Long.parseLong(id));
 
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -172,11 +171,10 @@ public class DbStore implements Store {
         boolean result = true;
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement(CONF.getValue("get.valid"))) {
-            st.setString(1, user.getId());
-            st.setString(2, user.getLogin());
-            st.setString(3, user.getEmail());
+            st.setString(1, user.getLogin());
+            st.setString(2, user.getEmail());
             ResultSet rs = st.executeQuery();
-            while (rs.next()) {
+            while (rs.next() && !rs.getString("id").equals(user.getId())) {
                 result = false;
             }
         } catch (Exception e) {

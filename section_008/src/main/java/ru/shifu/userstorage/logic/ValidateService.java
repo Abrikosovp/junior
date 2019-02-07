@@ -84,7 +84,7 @@ public class ValidateService implements Validate {
     private Function<User, String> update() {
         return user -> {
             String result = "User already exists";
-            if (this.store.update(user)) {
+            if (this.store.validate(user) && this.store.update(user)) {
                 result = String.format("User with id: %s was update.", user.getId());
             }
             return result;

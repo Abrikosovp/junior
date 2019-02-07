@@ -20,13 +20,7 @@ public class User {
     private String email;
     private Date createDate;
 
-    /**
-     * To generate a random id.
-     */
-    private final Random rn = new Random();
-
     public User(String name, String login, String password, Role role, String email) {
-        this.id = String.valueOf(System.currentTimeMillis() + rn.nextInt());
         this.name = name;
         this.login = login;
         this.password = password;

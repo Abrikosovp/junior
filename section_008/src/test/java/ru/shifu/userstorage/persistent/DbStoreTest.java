@@ -23,13 +23,14 @@ public class DbStoreTest {
 
     @Before
     public void beforeTest() {
-        this.db.add(new User("1","123", "Ken", "ewLogin", Role.ADMIN, "NewEmail"));
-        this.two = new User("1","123", "Katy", "ewLogin", Role.ADMIN, "NewEmail");
+        this.db.fullDelete();
+        this.db.add(new User("123", "Ken", "ewLogin", Role.ADMIN, "NewEmail"));
+        this.two = new User("1", "123", "Katy", "ewLogin", Role.ADMIN, "NewEmail");
     }
 
     @After
     public void afterTest() {
-        assertTrue( this.db.fullDelete());
+        assertTrue(this.db.fullDelete());
     }
 
     @Test
@@ -44,7 +45,7 @@ public class DbStoreTest {
 
     @Test
     public void whenFindIdUsersThenReturnResult() {
-        assertThat(db.findById(two.getId()).getName(), is("123"));
+        assertThat(db.findById(db.findAll().get(0).getId()).getName(), is("123"));
     }
 
     @Test
