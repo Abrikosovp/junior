@@ -1,0 +1,14 @@
+input[type=text] {
+    background-color: #bcb1b9;
+    color: white;
+}
+th {
+    text-align: center;
+    background-color: #F5F5DC;
+}
+tr {
+    text-align: center;
+}
+body{
+    background-color: #FAEBD7;
+}
