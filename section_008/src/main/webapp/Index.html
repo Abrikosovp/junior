@@ -14,7 +14,7 @@
 <body>
 <div class="container-fluid" style="width: 350px ">
     <h3 style="text-align: center">Enter person data</h3>
-    <form class="form-horizontal" onsubmit="return validate()">
+    <form class="form-horizontal">
 
         <div class="form-group">
             <label for="fname">First name:</label>
@@ -35,7 +35,7 @@
             <input type="text" class="form-control" id="desc" placeholder="Enter description"/>
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-primary" onclick="return addRow()">Submit</button>
     </form>
 </div>
 
@@ -51,18 +51,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>First</td>
-            <td>Last</td>
-            <td>Male</td>
-            <td>Description for user</td>
-        </tr>
-        <tr>
-            <td>First</td>
-            <td>Last</td>
-            <td>Male</td>
-            <td>Description for user</td>
-        </tr>
+        <tr></tr>
         </tbody>
     </table>
 </div>
