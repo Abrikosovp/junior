@@ -75,4 +75,9 @@ public class MemoryStoreTest {
         Boolean result = def.delete(user);
         assertTrue(result);
     }
+
+    @Test
+    public void whenDValidateUserThanDeletedTest2() {
+        assertFalse(this.store.validate(this.user1));
+    }
 }

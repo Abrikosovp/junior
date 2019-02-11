@@ -69,6 +69,10 @@
                   style="margin: 2px; display: inline-block">
                 <input type="submit" value="Sign out"/>
             </form>
+            <form action="${pageContext.servletContext.contextPath}/json.index" method="post"
+                  style="margin: 2px; display: inline-block">
+                <input type="submit" value="Json"/>
+            </form>
         </td>
     </tr>
 

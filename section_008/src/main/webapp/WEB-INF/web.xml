@@ -33,7 +33,7 @@
 
     <servlet-mapping>
         <servlet-name>UsersServlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/welcome</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -96,5 +96,22 @@
     <servlet-mapping>
         <servlet-name>GuestServlet</servlet-name>
         <url-pattern>/guest</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>JsonController</servlet-name>
+        <servlet-class>ru.shifu.servlets.JsonController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JsonController</servlet-name>
+        <url-pattern>/json</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>JsonServlet</servlet-name>
+        <servlet-class>ru.shifu.servlets.JsonServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JsonServlet</servlet-name>
+        <url-pattern>/json.index</url-pattern>
     </servlet-mapping>
 </web-app>

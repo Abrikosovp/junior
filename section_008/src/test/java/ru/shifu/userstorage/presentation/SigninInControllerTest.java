@@ -50,7 +50,6 @@ public class SigninInControllerTest {
         when(this.request.getRequestDispatcher(this.PATH)).thenReturn(this.dispatcher);
     }
 
-
     @Test
     public void whenDoGetThenForwardToView() throws ServletException, IOException {
         new SigninInController().doGet(this.request, this.response);
@@ -76,7 +75,6 @@ public class SigninInControllerTest {
         when(this.request.getParameter("password")).thenReturn("root");
         when(this.request.getSession()).thenReturn(session);
         new SigninInController().doPost(this.request, this.response);
-        verify(this.response).sendRedirect(String.format("%s/", this.request.getContextPath()));
+        verify(this.response).sendRedirect(String.format("%s/welcome", this.request.getContextPath()));
     }
-
 }

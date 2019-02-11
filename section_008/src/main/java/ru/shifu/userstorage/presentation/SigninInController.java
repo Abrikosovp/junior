@@ -30,7 +30,7 @@ public class SigninInController extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("login", login);
             session.setAttribute("uid", id);
-            response.sendRedirect(String.format("%s/", request.getContextPath()));
+            response.sendRedirect(String.format("%s/welcome", request.getContextPath()));
         } else {
             request.setAttribute("error", "Sign in invalid");
             doGet(request, response);

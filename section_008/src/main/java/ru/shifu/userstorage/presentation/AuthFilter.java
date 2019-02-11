@@ -38,7 +38,7 @@ public class AuthFilter implements Filter {
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
-        if (request.getRequestURI().contains("/guest") || request.getRequestURI().contains("/signin") || request.getRequestURI().contains("/create")) {
+        if (request.getRequestURI().contains("/guest") || request.getRequestURI().contains("/signin") || request.getRequestURI().contains("/create") || request.getRequestURI().contains("/json") || request.getRequestURI().contains("/Index.html")) {
             filterChain.doFilter(req, resp);
         } else {
             HttpSession session = request.getSession();
