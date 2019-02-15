@@ -1,6 +1,7 @@
 package ru.shifu.servlets;
 
 import org.junit.Test;
+import ru.shifu.userstorage.models.PersonalData;
 import ru.shifu.userstorage.models.Role;
 import ru.shifu.userstorage.models.User;
 
@@ -30,12 +31,13 @@ public class PersonTest {
     public void whenEqualsThenResult() {
         Person personFirst = new Person("first", "second", "sex", "desc");
         Person personSecond = new Person("first", "second", "sex", "desc");
-        User user = new User("1", "1", "1", Role.ADMIN, "1");
+        User user = new User("1", "1", "1", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow"));
         boolean userFalse = personFirst.equals(user);
-        boolean eq = personFirst.equals(personFirst);
-        boolean equ = personFirst.getSex().equals(personSecond.getSex());
-        assertTrue(equ);
-        assertTrue(eq);
+
+        assertTrue(personFirst.getSex().equals(personSecond.getSex()));
+        assertTrue(personFirst.getDescription().equals(personFirst.getDescription()));
+        assertTrue(personFirst.getDescription().equals(personSecond.getDescription()));
+        assertTrue(personFirst.equals(personFirst));
         assertFalse(userFalse);
     }
 
@@ -44,5 +46,7 @@ public class PersonTest {
         Person personFirst = new Person("first", "second", "sex", "desc");
         Person personSecond = new Person("first", "second", "sex", "desc");
         assertThat(personFirst.toString(), is(personSecond.toString()));
+        assertThat(personFirst.getDescription(), is("desc"));
+        assertThat(personFirst.getSecondname(), is("second"));
     }
 }

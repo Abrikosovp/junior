@@ -29,4 +29,8 @@ public interface Store {
     boolean validate(User user);
 
     boolean fullDelete();
+
+    List<String> getCities(String country);
+
+    List<String> getCountry();
 }

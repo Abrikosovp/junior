@@ -3,6 +3,7 @@ package ru.shifu.userstorage.persistent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ru.shifu.userstorage.models.PersonalData;
 import ru.shifu.userstorage.models.Role;
 import ru.shifu.userstorage.models.User;
 
@@ -24,8 +25,8 @@ public class DbStoreTest {
     @Before
     public void beforeTest() {
         this.db.fullDelete();
-        this.db.add(new User("123", "Ken", "ewLogin", Role.ADMIN, "NewEmail"));
-        this.two = new User("1", "123", "Katy", "ewLogin", Role.ADMIN, "NewEmail");
+        this.db.add(new User("name", "login", "password", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow")));
+        this.two = new User("1", "name", "login", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow"));
     }
 
     @After
@@ -45,7 +46,7 @@ public class DbStoreTest {
 
     @Test
     public void whenFindIdUsersThenReturnResult() {
-        assertThat(db.findById(db.findAll().get(0).getId()).getName(), is("123"));
+        assertThat(db.findById(db.findAll().get(0).getId()).getName(), is("Pavel"));
     }
 
     @Test

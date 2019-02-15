@@ -1,5 +1,6 @@
 package ru.shifu.userstorage.logic;
 
+import ru.shifu.userstorage.models.PersonalData;
 import ru.shifu.userstorage.models.Role;
 import ru.shifu.userstorage.models.User;
 
@@ -89,7 +90,7 @@ public class ValidateStub implements Validate  {
         this.load(Action.Type.ADD, this.add());
         this.load(Action.Type.DELETE, this.delete());
         this.load(Action.Type.UPDATE, this.update());
-        doAction(Action.Type.ADD, new User("1", "name", "root", "root", Role.ADMIN, "admin"));
+        doAction(Action.Type.ADD, new User("1", "root", "root", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow")));
         return this;
     }
     /**
@@ -153,5 +154,15 @@ public class ValidateStub implements Validate  {
             result = true;
         }
         return result;
+    }
+
+    @Override
+    public List<String> getCountries() {
+        return null;
+    }
+
+    @Override
+    public List<String> getCities(String country) {
+        return null;
     }
 }

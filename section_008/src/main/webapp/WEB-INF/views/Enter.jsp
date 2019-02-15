@@ -1,16 +1,23 @@
-<%--
-  Enter JSP.
-  User: Sergey Filippov (serdg1984@yandex.ru).
-  Version: 1.0
-  Since: 03.12.18 
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Welcome</title>
+    <style>
+        div.container1 {
+            height: 10em;
+            position: relative }
+
+        div.container1 {
+            margin: 0;
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%) }
+    </style>
 </head>
 <body style="background-color: #FAEBD7">
-<div class="container">
+<div class="container1">
     <h4 class="text-primary">Please enter you action</h4>
     <form action="${pageContext.servletContext.contextPath}/signin" method="get">
         <div class="form-group">

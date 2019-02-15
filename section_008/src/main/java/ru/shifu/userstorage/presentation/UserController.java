@@ -3,6 +3,7 @@ package ru.shifu.userstorage.presentation;
 import ru.shifu.userstorage.logic.Action;
 import ru.shifu.userstorage.logic.Validate;
 import ru.shifu.userstorage.logic.ValidateService;
+import ru.shifu.userstorage.models.PersonalData;
 import ru.shifu.userstorage.models.Role;
 import ru.shifu.userstorage.models.User;
 
@@ -44,12 +45,16 @@ public class UserController extends HttpServlet {
         String password = request.getParameter("password");
         Role role = Role.valueOf(request.getParameter("role"));
         String email = request.getParameter("email");
+        String country = request.getParameter("country");
+        String city = request.getParameter("city");
+
+
 
         User user;
         if (id == null || id.equals("")) {
-            user = new User(name, login, password, role, email);
+            user = new User(login, password, role, new PersonalData(name, email, country, city));
         } else {
-            user = new User(id, name, login, password, role, email);
+            user = new User(id, login, password, role, new PersonalData(name, email, country, city));
         }
 
         String result = this.validate.doAction(act, user);

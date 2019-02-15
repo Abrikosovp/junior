@@ -15,4 +15,8 @@ public interface Validate {
     long isRegistered(String login, String password);
 
     boolean fullDelete();
+
+    List<String> getCountries();
+
+    List<String> getCities(String country);
 }

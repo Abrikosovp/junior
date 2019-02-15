@@ -57,7 +57,7 @@ public class ValidateService implements Validate {
         return user -> {
             String result = "User already exists";
             if (user != null && this.store.validate(user) && this.store.add(user)) {
-                result = String.format("User with id: %s was added.", user.getId());
+                result = String.format("User with id: added.", user.getId());
             }
             return result;
         };
@@ -159,5 +159,15 @@ public class ValidateService implements Validate {
      */
     public boolean fullDelete() {
         return this.store.fullDelete();
+    }
+
+    @Override
+    public List<String> getCountries() {
+        return store.getCountry();
+    }
+
+    @Override
+    public List<String> getCities(String country) {
+        return store.getCities(country);
     }
 }

@@ -3,6 +3,7 @@ package ru.shifu.userstorage.persistent;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.shifu.userstorage.models.PersonalData;
 import ru.shifu.userstorage.models.Role;
 import ru.shifu.userstorage.models.User;
 
@@ -65,7 +66,9 @@ public class DbStore implements Store {
             st.setString(2, user.getLogin());
             st.setString(4, user.getRole().name());
             st.setString(5, user.getEmail());
-            st.setDate(6, new Date(user.getCreateDate().getTime()));
+            int locId = getLocationId(user.getCountry(), user.getCity());
+            st.setInt(6, locId);
+            st.setDate(7, new Date(user.getCreateDate().getTime()));
             st.executeUpdate();
             result = true;
         } catch (Exception e) {
@@ -88,9 +91,11 @@ public class DbStore implements Store {
             st.setString(1, user.getName());
             st.setString(2, user.getLogin());
             st.setString(3, user.getPassword());
-            st.setString(4, user.getRole().name());
             st.setString(5, user.getEmail());
-            st.setLong(6, Long.parseLong(user.getId()));
+            st.setString(4, user.getRole().name());
+            int locId = getLocationId(user.getCountry(), user.getCity());
+            st.setInt(6, locId);
+            st.setLong(7, Long.parseLong(user.getId()));
             st.executeUpdate();
             result = true;
         } catch (Exception e) {
@@ -201,6 +206,83 @@ public class DbStore implements Store {
         return result;
     }
 
+    @Override
+    public List<String> getCities(String country) {
+        List<String> result = new ArrayList<>();
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement st = connection.prepareStatement(
+                     "SELECT cities.name FROM cities INNER JOIN countries "
+                             + "ON cities.c_id = countries.c_id WHERE countries.name = ? ORDER BY cities.name")) {
+            st.setString(1, country);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String cityValue = rs.getString("name");
+                result.add(cityValue);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Cant get Cities! ERROR!", e);
+        }
+        return result;
+    }
+
+    @Override
+    public List<String> getCountry() {
+        List<String> result = new ArrayList<>();
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement st = connection.prepareStatement(
+                     "SELECT name FROM countries ORDER BY name")) {
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String countryValue = rs.getString("name");
+                result.add(countryValue);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Cant get Cities! ERROR!", e);
+        }
+        return result;
+    }
+
+    private int getLocationId(String country, String city) {
+        int id = -1;
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement st = connection.prepareStatement(
+                     "SELECT cities.loc_id FROM cities INNER JOIN countries "
+                             + "ON cities.c_id = countries.c_id WHERE countries.name = ? AND cities.name = ?")) {
+            st.setString(1, country);
+            st.setString(2, city);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt("loc_id");
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Cant get ID! ERROR!", e);
+        }
+        return id;
+    }
+
+    private String[] getLocationById(int id) {
+        String[] result = new String[2];
+        if (id != -1) {
+            try (Connection connection = SOURCE.getConnection();
+                 PreparedStatement st = connection.prepareStatement("SELECT countries.name AS country, cities.name AS city "
+                         + "FROM cities INNER JOIN countries "
+                         + "ON cities.c_id = countries.c_id "
+                         + "WHERE cities.loc_id = ?;")) {
+                st.setInt(1, id);
+                ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                    String country = rs.getString("country");
+                    String city = rs.getString("city");
+                    result[0] = country;
+                    result[1] = city;
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Cant get location! ERROR!", e);
+            }
+        }
+        return result;
+    }
+
     /**
      * Create user.
      *
@@ -216,7 +298,10 @@ public class DbStore implements Store {
         Date data = rs.getDate("created");
         String password = rs.getString("password");
         Role role = Role.valueOf(rs.getString("role"));
-        return new User(id, name, login, password, role, email, data);
+        int locId = rs.getInt("loc_id");
+        String[] location = getLocationById(locId);
+        PersonalData dat = new PersonalData(name, email, location[0], location[1]);
+        return new User(id, login, password, role, dat, data);
     }
 
     /**

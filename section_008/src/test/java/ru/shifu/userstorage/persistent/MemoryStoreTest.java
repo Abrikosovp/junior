@@ -2,6 +2,7 @@ package ru.shifu.userstorage.persistent;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ru.shifu.userstorage.models.PersonalData;
 import ru.shifu.userstorage.models.Role;
 import ru.shifu.userstorage.models.User;
 
@@ -27,10 +28,10 @@ public class MemoryStoreTest {
 
     @Before
     public void before() {
-        this.findBy = new User("1", "updated first", "updated first login", "pass", Role.ADMIN, "ufirst@mail.ru");
-        this.user1 = new User("1", "first", "first login", "pass", Role.ADMIN, "first@mail.ru");
-        this.user2 = new User("2", "second", "second login", "pass", Role.ADMIN, "second@mail.ru");
-        this.user3 = new User("2", "second", "second login", "pass", Role.ADMIN, "second@mail.ru");
+        this.findBy = new User("1", "updated first", "updated first login", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow"));
+        this.user1 = new User("1", "first", "first login", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow"));
+        this.user2 = new User("2", "second", "second login", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow"));
+        this.user3 = new User("2", "second", "second login", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow"));
         this.store.add(this.user1);
         this.store.add(this.user2);
         this.store.add(this.user3);
@@ -49,11 +50,11 @@ public class MemoryStoreTest {
     @Test
     public void whenUpdateUserThanUpdated() {
         this.store.update(this.findBy);
-        assertThat(this.store.findById(this.findBy.getId()).getName(), is("updated first"));
+        assertThat(this.store.findById(this.findBy.getId()).getName(), is("Pavel"));
 
         assertThat(
                 this.store.update(
-                        new User("33", "updated first", "updated first login", "pass", Role.ADMIN, "ufirst@mail.ru")),
+                        new User("33", "updated first", "updated first login", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow"))),
                 is(false));
     }
 
@@ -61,17 +62,17 @@ public class MemoryStoreTest {
     public void whenDeleteUserThanDeleted() {
         assertTrue(this.store.delete(this.user1));
         assertNull(this.store.findById(this.user1.getId()));
-        assertThat(this.store.delete(new User("22", "updated first", "updated first login", "pass", Role.ADMIN, "ufirst@mail.ru")), is(false));
-        User user = new User("33", "updated first", "updated first login", "pass", Role.ADMIN, "ufirst@mail.ru");
-        User user2 = new User("33", "updated first", "updated first login", "pass", Role.ADMIN, "ufirst@mail.ru");
+        assertThat(this.store.delete(new User("22", "updated first", "updated first login", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow"))), is(false));
+        User user = new User("33", "updated first", "updated first login", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow"));
+        User user2 = new User("33", "updated first", "updated first login", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow"));
         assertThat(user2.toString(), is(user.toString()));
     }
 
     @Test
     public void whenDeleteUserThanDeletedTest2() {
         MemoryStore def = MemoryStore.getInstance();
-        def.add(new User("33", "updated first", "updated first login", "pass", Role.ADMIN, "ufirst@mail.ru"));
-        User user = new User("33", "s", "l", "pass", Role.ADMIN, "e");
+        def.add(new User("33", "updated first", "updated first login", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow")));
+        User user = new User("33", "s", "l", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow"));
         Boolean result = def.delete(user);
         assertTrue(result);
     }

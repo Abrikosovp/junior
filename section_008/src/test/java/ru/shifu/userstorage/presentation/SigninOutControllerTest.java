@@ -3,7 +3,6 @@ package ru.shifu.userstorage.presentation;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,20 +21,16 @@ import static org.mockito.Mockito.*;
  */
 public class SigninOutControllerTest {
 
-    private SigninOutController servlet;
     private HttpServletRequest request;
     private HttpServletResponse response;
-    private RequestDispatcher dispatcher;
     private HttpSession session;
 
 
     @Before
     public void createMocks() {
         session = mock(HttpSession.class);
-        this.servlet = new SigninOutController();
         this.request = mock(HttpServletRequest.class);
         this.response = mock(HttpServletResponse.class);
-        this.dispatcher = mock(RequestDispatcher.class);
     }
 
     @Test

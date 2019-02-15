@@ -10,6 +10,7 @@ import ru.shifu.userstorage.logic.Action;
 import ru.shifu.userstorage.logic.Validate;
 import ru.shifu.userstorage.logic.ValidateService;
 import ru.shifu.userstorage.logic.ValidateStub;
+import ru.shifu.userstorage.models.PersonalData;
 import ru.shifu.userstorage.models.Role;
 import ru.shifu.userstorage.models.User;
 
@@ -75,7 +76,7 @@ public class UserControllerTest {
 
     @Test
     public void whenUpdate() throws IOException, ServletException {
-        User first = new User("19", "s", "l", "u", Role.ADMIN, "abrik");
+        User first = new User("19", "19", "s", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow"));
         this.validate.doAction(Action.Type.ADD, first);
 
         when(this.request.getParameter("action")).thenReturn("update");
@@ -85,6 +86,8 @@ public class UserControllerTest {
         when(this.request.getParameter("password")).thenReturn("moot");
         when(this.request.getParameter("role")).thenReturn("ADMIN");
         when(this.request.getParameter("email")).thenReturn("admin@mail");
+        when(this.request.getParameter("city")).thenReturn("Moscow");
+        when(this.request.getParameter("country")).thenReturn("admin@mail");
         when(this.request.getRequestDispatcher("/WEB-INF/views/UserView.jsp")).thenReturn(this.dispatcher);
 
         when(this.session.getAttribute("login")).thenReturn("moot");
@@ -97,7 +100,7 @@ public class UserControllerTest {
 
     @Test
     public void whenDelete() throws IOException, ServletException {
-        User first = new User("199", "second", "lo", "user", Role.ADMIN, "abrikosov@m");
+        User first = new User("199", "199", "second", Role.ADMIN, new PersonalData("Pavel", "abriksovp@mail.ru", "Russia", "Moscow"));
         this.validate.doAction(Action.Type.ADD, first);
         assertNotNull(this.validate.findById("199"));
 

@@ -1,7 +1,6 @@
 package ru.shifu.userstorage.models;
 
 import java.util.Date;
-import java.util.Random;
 
 /**
  * Simple model of data.
@@ -13,40 +12,37 @@ import java.util.Random;
  */
 public class User {
     private String id;
-    private String name;
     private String login;
     private String password;
     private Role role;
-    private String email;
+    private PersonalData persona;
     private Date createDate;
 
-    public User(String name, String login, String password, Role role, String email) {
-        this.name = name;
+    public User(String login, String password, Role role, PersonalData persona) {
         this.login = login;
         this.password = password;
         this.role = role;
-        this.email = email;
+        this.persona = persona;
         this.createDate = new Date();
     }
 
-    public User(String id, String name, String login, String password, Role role, String email) {
+    public User(String id, String login, String password, Role role, PersonalData persona) {
         this.id = id;
-        this.name = name;
         this.login = login;
         this.password = password;
         this.role = role;
-        this.email = email;
+        this.persona = persona;
         this.createDate = new Date();
     }
 
-    public User(String id, String name, String login, String password, Role role, String email, Date date) {
+    public User(String id, String login, String password, Role role, PersonalData persona, Date date) {
         this.id = id;
-        this.name = name;
         this.login = login;
         this.password = password;
         this.role = role;
-        this.email = email;
+        this.persona = persona;
         this.createDate = date;
+
     }
 
     public String getPassword() {
@@ -61,17 +57,10 @@ public class User {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String getLogin() {
         return login;
     }
 
-    public String getEmail() {
-        return email;
-    }
 
     public Date getCreateDate() {
         return createDate;
@@ -81,11 +70,25 @@ public class User {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return String.format("User id: %s, Name: %s, Login: %s, Role: %s Email: %s, Create date: %s \n",
-                id, name, login, role, email, createDate);
+    public String getName() {
+        return persona.getName();
     }
 
+    public String getEmail() {
+        return persona.getEmail();
+    }
 
+    public String getCountry() {
+        return persona.getCountry();
+    }
+
+    public String getCity() {
+        return persona.getCity();
+    }
+
+    @Override
+    public String toString() {
+        return String.format("User id: %s, Login: %s, Role: %s Create date: %s \n",
+                id, login, role, createDate);
+    }
 }

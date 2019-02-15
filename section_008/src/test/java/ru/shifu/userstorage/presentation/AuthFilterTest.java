@@ -3,6 +3,7 @@ package ru.shifu.userstorage.presentation;
 import org.junit.Test;
 
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,5 +39,15 @@ public class AuthFilterTest {
         when(session.getAttribute("login")).thenReturn("login444");
         new AuthFilter().doFilter(req, resp, filterChain);
         verify(filterChain, times(1)).doFilter(req, resp);
+    }
+
+    @Test
+    public void initTest() throws IOException, ServletException {
+        FilterConfig req = mock(FilterConfig.class);
+        new AuthFilter().init(req);
+    }
+    @Test
+    public void destroyTest() throws IOException, ServletException {
+        new AuthFilter().destroy();
     }
 }

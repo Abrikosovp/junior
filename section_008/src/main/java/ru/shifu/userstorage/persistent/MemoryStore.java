@@ -27,7 +27,7 @@ public class MemoryStore implements Store {
      * Users storage.
      * The user id is used as a key for the map.
      */
-   private static ConcurrentHashMap<String, User> store = new ConcurrentHashMap<>();
+   private ConcurrentHashMap<String, User> store = new ConcurrentHashMap<>();
     /**
      * Only one instance of this class will be created.
      * @return instance of class.
@@ -107,5 +107,15 @@ public class MemoryStore implements Store {
     public boolean fullDelete() {
         store.clear();
         return true;
+    }
+
+    @Override
+    public List<String> getCities(String country) {
+        return null;
+    }
+
+    @Override
+    public List<String> getCountry() {
+        return null;
     }
 }
