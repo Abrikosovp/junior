@@ -22,6 +22,7 @@
         <module>section_006</module>
         <module>section_007</module>
         <module>section_008</module>
+        <module>section_008_Service_Cinema</module>
     </modules>
 
     <dependencies>

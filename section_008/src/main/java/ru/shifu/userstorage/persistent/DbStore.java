@@ -30,7 +30,7 @@ public class DbStore implements Store {
 
     private static final DbStore INSTANCE = new DbStore();
 
-    public DbStore() {
+    private DbStore() {
         SOURCE.setDriverClassName("org.postgresql.Driver");
         SOURCE.setUrl(CONF.getValue("get.url"));
         SOURCE.setUsername(CONF.getValue("get.name"));

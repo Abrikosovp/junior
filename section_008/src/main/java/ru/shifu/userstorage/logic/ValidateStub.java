@@ -42,7 +42,7 @@ public class ValidateStub implements Validate  {
     }
     /**
      * Add new User to storage.
-     * @return message to logic layout.
+     * @return message to service layout.
      */
     private Function<User, String> add() {
         return user -> {
@@ -56,7 +56,7 @@ public class ValidateStub implements Validate  {
 
     /**
      * Removes user by id.
-     * @return message to logic layout.
+     * @return message to service layout.
      */
     private Function<User, String> delete() {
         return user -> {
@@ -70,7 +70,7 @@ public class ValidateStub implements Validate  {
 
     /**
      * Changes user if it exists.
-     * @return message to logic layout.
+     * @return message to service layout.
      */
     private Function<User, String> update() {
         return user -> {
